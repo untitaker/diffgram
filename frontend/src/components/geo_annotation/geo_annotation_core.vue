@@ -43,6 +43,7 @@
             :style="`height: calc(100vh - 100px); z-index: 0; width: 100%; cursor: ${cursor}`" 
         />
     </div>
+    <canvas id="canvas" ref="canvas" width="512" height="384" />
 </div>
 </template>
 
@@ -287,13 +288,15 @@ export default Vue.extend({
             image.getHeight() - (y * image.getTileHeight()),
         ];
 
-        console.log(wnd)
-
         const imageRGB = await image.readRGB({
           window: wnd,
         });
 
-        console.log(imageRGB)
+        const imageData = new ImageData(imageRGB, wnd[2])
+
+        const canvas = this.$refs.canvas
+        var ctx = canvas.getContext('2d');
+        this.putImageData(ctx, imageData, 0, 0);
 
         this.map_instance = map
 
@@ -302,6 +305,28 @@ export default Vue.extend({
         }).addTo(map);
     },
     methods: {
+        putImageData: function(ctx, imageData, dx, dy,
+                dirtyX, dirtyY, dirtyWidth, dirtyHeight) {
+            var data = imageData.data;
+            var height = imageData.height;
+            var width = imageData.width;
+            dirtyX = dirtyX || 0;
+            dirtyY = dirtyY || 0;
+            dirtyWidth = dirtyWidth !== undefined? dirtyWidth: width;
+            dirtyHeight = dirtyHeight !== undefined? dirtyHeight: height;
+            var limitBottom = dirtyY + dirtyHeight;
+            var limitRight = dirtyX + dirtyWidth;
+            for (var y = dirtyY; y < limitBottom; y++) {
+                for (var x = dirtyX; x < limitRight; x++) {
+                var pos = y * width + x;
+                ctx.fillStyle = 'rgba(' + data[pos*4+0]
+                                    + ',' + data[pos*4+1]
+                                    + ',' + data[pos*4+2]
+                                    + ',' + (data[pos*4+3]/255) + ')';
+                ctx.fillRect(x + dx, y + dy, 1, 1);
+                }
+            }
+        },
         on_mount: function() {
             this.history = new History();
             this.command_manager = new CommandManager(this.history)
