@@ -49,6 +49,7 @@
 <script>
 import Vue from "vue"
 import L from "leaflet"
+import { fromUrl } from 'geotiff';
 import geo_toolbar from "./geo_toolbar.vue"
 import geo_sidebar from "./geo_sidebar.vue"
 import CommandManager from "../../helpers/command/command_manager"
@@ -266,10 +267,33 @@ export default Vue.extend({
             ],
         };
     },
-    mounted() {
+    async mounted() {
         this.on_mount()
         this.hot_key_listeners()
         const map = L.map('map').setView(this.initial_center, this.zoom);
+
+        // Values that I have no idea what it is, but we need them
+        const x = 0;
+        const y = 0;
+        const coef = 6; // I think it's compression value, but it's not 100%
+
+        const tiff = await fromUrl("https://oin-hotosm.s3.amazonaws.com/56f9b5a963ebf4bc00074e70/0/56f9c2d42b67227a79b4faec.tif")
+        const image = await tiff.getImage(coef)
+
+        const wnd = [
+            x * image.getTileWidth(),
+            image.getHeight() - ((y + 1) * image.getTileHeight()),
+            (x + 1) * image.getTileWidth(),
+            image.getHeight() - (y * image.getTileHeight()),
+        ];
+
+        console.log(wnd)
+
+        const imageRGB = await image.readRGB({
+          window: wnd,
+        });
+
+        console.log(imageRGB)
 
         this.map_instance = map
 
