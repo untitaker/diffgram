@@ -39,7 +39,6 @@
             id="map" 
             ref="map" 
             @click="draw_instance" 
-            @mouseup="change_center"
             :style="`height: calc(100vh - 100px); z-index: 0; width: 100%; cursor: ${cursor}`"
         />
     </div>
@@ -63,8 +62,11 @@ import TileLayer from 'ol/layer/WebGLTile';
 import OSM from 'ol/source/OSM';
 import View from 'ol/View';
 import Feature from 'ol/Feature'
-import Vector from 'ol/source/Vector'
+import VectorLayer from 'ol/layer/Vector'
+import VectorSource from 'ol/source/Vector'
 import Point from 'ol/geom/Point'
+import Circle from 'ol/geom/Circle'
+import { transform } from 'ol/proj';
 import 'leaflet/dist/leaflet.css';
 
 export default Vue.extend({
@@ -325,12 +327,40 @@ export default Vue.extend({
             if (!this.draw_mode) return;
 
             if (this.current_instance_type === 'geo_point') {
-                var point = new Feature(new Point(this.toRadian(e.layerX), this.toRadian(e.layerY)));
+                var lonlat = transform([this.toRadian(e.layerX), this.toRadian(e.layerY)], 'EPSG:3857', 'EPSG:4326');
+                console.log(lonlat)
+                const circleFeature = new Feature({
+                    geometry: new Point(lonlat),
+                });
 
-                var layer = new Vector("My Layer");
+                const newLayer = new VectorLayer({
+                    source: new VectorSource({
+                        features: [circleFeature],
+                    }),
+                })
 
-                this.map_instance.addLayer(layer);
-                layer.addFeatures([point]);
+                const view = new View({
+                    center: lonlat,
+                    zoom: 19,
+                })
+
+                this.map_instance.addLayer(newLayer)
+                this.map_instance.setView(view)
+
+                return 
+                var point = new Feature({
+                    geormetry: new Point(this.toRadian(e.layerX), this.toRadian(e.layerY))
+                });
+                
+                const sourceVector = new VectorSource("My Layer")
+                sourceVector.addFeature(point)
+                var vectorLayer = new VectorLayer({
+                    source: new VectorSource({
+                        features: [point],
+                    }),
+                })
+
+                this.map_instance.addLayer(vectorLayer);
                 return
                 // const point = L.point(e.layerX, e.layerY)
                 const unproject = this.map_instance.layerPointToLatLng(point)
