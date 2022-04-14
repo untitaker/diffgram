@@ -35,22 +35,14 @@
             @delete_instance="delete_instance"
             @change_instance_label="change_instance_label"
         />
-        <div 
-            id="map" 
-            ref="map" 
-            @click="draw_instance" 
-            @mouseup="change_center"
-            :style="`height: calc(100vh - 100px); z-index: 0; width: 100%; cursor: ${cursor}`" 
-        />
+        <div id="map" class="map" style="width: 100%; height: calc(100vh - 100px)"></div>
     </div>
-    <canvas id="canvas" ref="canvas" width="512" height="384" />
 </div>
 </template>
 
 <script>
 import Vue from "vue"
 import L from "leaflet"
-import { fromUrl } from 'geotiff';
 import geo_toolbar from "./geo_toolbar.vue"
 import geo_sidebar from "./geo_sidebar.vue"
 import CommandManager from "../../helpers/command/command_manager"
@@ -58,6 +50,12 @@ import InstanceList from "../../helpers/instance_list"
 import History from "../../helpers/history"
 import { CreateInstanceCommand, DeleteInstanceCommand, UpdateInstanceLabelCommand } from "../../helpers/command/available_commands"
 import { GeoPoly, GeoCircle, GeoPoint } from "../vue_canvas/instances/GeoInstance"
+import 'ol/ol.css';
+import GeoTIFF from 'ol/source/GeoTIFF';
+import Map from 'ol/Map';
+import TileLayer from 'ol/layer/WebGLTile';
+import OSM from 'ol/source/OSM';
+import View from 'ol/View';
 import 'leaflet/dist/leaflet.css';
 
 export default Vue.extend({
@@ -269,40 +267,61 @@ export default Vue.extend({
         };
     },
     async mounted() {
-        this.on_mount()
-        this.hot_key_listeners()
-        const map = L.map('map').setView(this.initial_center, this.zoom);
+        // this.on_mount()
+        // this.hot_key_listeners()
+        // const map = L.map('map1').setView(this.initial_center, this.zoom);
 
-        // Values that I have no idea what it is, but we need them
-        const x = 0;
-        const y = 0;
-        const coef = 6; // I think it's compression value, but it's not 100%
+        // // Values that I have no idea what it is, but we need them
+        // const x = 0;
+        // const y = 0;
+        // const coef = 6; // I think it's compression value, but it's not 100%
 
-        const tiff = await fromUrl("https://oin-hotosm.s3.amazonaws.com/56f9b5a963ebf4bc00074e70/0/56f9c2d42b67227a79b4faec.tif")
-        const image = await tiff.getImage(coef)
+        // const tiff = await fromUrl("https://oin-hotosm.s3.amazonaws.com/56f9b5a963ebf4bc00074e70/0/56f9c2d42b67227a79b4faec.tif")
+        // const image = await tiff.getImage(coef)
 
-        const wnd = [
-            x * image.getTileWidth(),
-            image.getHeight() - ((y + 1) * image.getTileHeight()),
-            (x + 1) * image.getTileWidth(),
-            image.getHeight() - (y * image.getTileHeight()),
-        ];
+        // const wnd = [
+        //     x * image.getTileWidth(),
+        //     image.getHeight() - ((y + 1) * image.getTileHeight()),
+        //     (x + 1) * image.getTileWidth(),
+        //     image.getHeight() - (y * image.getTileHeight()),
+        // ];
 
-        const imageRGB = await image.readRGB({
-          window: wnd,
-        });
+        // const imageRGB = await image.readRGB({
+        //   window: wnd,
+        // });
 
-        const imageData = new ImageData(imageRGB, wnd[2])
+        // const imageData = new ImageData(imageRGB, wnd[2])
 
-        const canvas = this.$refs.canvas
-        var ctx = canvas.getContext('2d');
-        this.putImageData(ctx, imageData, 0, 0);
+        // this.map_instance = map
 
-        this.map_instance = map
+        // L.tileLayer(this.url, {
+        //     attribution: this.attribution
+        // }).addTo(map);
 
-        L.tileLayer(this.url, {
-            attribution: this.attribution
-        }).addTo(map);
+const source = new GeoTIFF({
+  sources: [
+    {
+      url: 'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/2020/S2A_36QWD_20200701_0_L2A/TCI.tif',
+    },
+  ],
+});
+
+const map = new Map({
+  target: 'map',
+  layers: [
+    new TileLayer({
+      source: new OSM(),
+    })
+  ],
+  view: new View({
+    center: [0, 0],
+    zoom: 2,
+  }),
+});
+
+map.addLayer(new TileLayer({
+      source: source,
+    }),)
     },
     methods: {
         putImageData: function(ctx, imageData, dx, dy,
