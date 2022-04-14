@@ -35,7 +35,13 @@
             @delete_instance="delete_instance"
             @change_instance_label="change_instance_label"
         />
-        <div id="map" class="map" style="width: 100%; height: calc(100vh - 100px)"></div>
+        <div 
+            id="map" 
+            ref="map" 
+            @click="draw_instance" 
+            @mouseup="change_center"
+            :style="`height: calc(100vh - 100px); z-index: 0; width: 100%; cursor: ${cursor}`"
+        />
     </div>
 </div>
 </template>
@@ -267,84 +273,42 @@ export default Vue.extend({
         };
     },
     async mounted() {
-        // this.on_mount()
-        // this.hot_key_listeners()
-        // const map = L.map('map1').setView(this.initial_center, this.zoom);
+        this.on_mount()
+        this.hot_key_listeners()
 
-        // // Values that I have no idea what it is, but we need them
-        // const x = 0;
-        // const y = 0;
-        // const coef = 6; // I think it's compression value, but it's not 100%
+        const source = new GeoTIFF({
+            sources: [
+                {
+                    url: 'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/2020/S2A_36QWD_20200701_0_L2A/TCI.tif',
+                },
+            ],
+        });
 
-        // const tiff = await fromUrl("https://oin-hotosm.s3.amazonaws.com/56f9b5a963ebf4bc00074e70/0/56f9c2d42b67227a79b4faec.tif")
-        // const image = await tiff.getImage(coef)
+        const map = new Map({
+            target: 'map',
+            layers: [
+                new TileLayer({
+                    source: new OSM(),
+                })
+            ],
+            view: new View(
+                {
+                    center: [0, 0],
+                    zoom: 2,
+                }
+            ),
+        });
 
-        // const wnd = [
-        //     x * image.getTileWidth(),
-        //     image.getHeight() - ((y + 1) * image.getTileHeight()),
-        //     (x + 1) * image.getTileWidth(),
-        //     image.getHeight() - (y * image.getTileHeight()),
-        // ];
+        map.addLayer(new TileLayer({ source, opacity: 0.5 }))
+        const view = await source.getView()
+        const overlayView = new View({...view})
+        map.setView(overlayView)
 
-        // const imageRGB = await image.readRGB({
-        //   window: wnd,
-        // });
-
-        // const imageData = new ImageData(imageRGB, wnd[2])
-
-        // this.map_instance = map
-
-        // L.tileLayer(this.url, {
-        //     attribution: this.attribution
-        // }).addTo(map);
-
-const source = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/2020/S2A_36QWD_20200701_0_L2A/TCI.tif',
-    },
-  ],
-});
-
-const map = new Map({
-  target: 'map',
-  layers: [
-    new TileLayer({
-      source: new OSM(),
-    })
-  ],
-  view: new View({
-    center: [0, 0],
-    zoom: 2,
-  }),
-});
-
-map.addLayer(new TileLayer({
-      source: source,
-    }),)
+        this.map_instance = map
     },
     methods: {
-        putImageData: function(ctx, imageData, dx, dy,
-                dirtyX, dirtyY, dirtyWidth, dirtyHeight) {
-            var data = imageData.data;
-            var height = imageData.height;
-            var width = imageData.width;
-            dirtyX = dirtyX || 0;
-            dirtyY = dirtyY || 0;
-            dirtyWidth = dirtyWidth !== undefined? dirtyWidth: width;
-            dirtyHeight = dirtyHeight !== undefined? dirtyHeight: height;
-            var limitBottom = dirtyY + dirtyHeight;
-            var limitRight = dirtyX + dirtyWidth;
-            for (var y = dirtyY; y < limitBottom; y++) {
-                for (var x = dirtyX; x < limitRight; x++) {
-                var pos = y * width + x;
-                ctx.fillStyle = 'rgba(' + data[pos*4+0]
-                                    + ',' + data[pos*4+1]
-                                    + ',' + data[pos*4+2]
-                                    + ',' + (data[pos*4+3]/255) + ')';
-                ctx.fillRect(x + dx, y + dy, 1, 1);
-                }
-            }
+        on_click_trial: function(e) {
+            console.log(e)
         },
         on_mount: function() {
             this.history = new History();
