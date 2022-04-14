@@ -67,6 +67,9 @@ import VectorSource from 'ol/source/Vector'
 import Point from 'ol/geom/Point'
 import Circle from 'ol/geom/Circle'
 import { transform } from 'ol/proj';
+import MousePosition from 'ol/control/MousePosition';
+import {createStringXY} from 'ol/coordinate';
+import {defaults as defaultControls} from 'ol/control';
 import 'leaflet/dist/leaflet.css';
 
 export default Vue.extend({
@@ -260,6 +263,7 @@ export default Vue.extend({
             initial_center: [51.505, -0.159],
             current_center: [51.505, -0.159],
             current_instance_type: "geo_circle",
+            mouse_coords: [],
             instance_type_list: [
                 {
                     name: "geo_polygon",
@@ -281,6 +285,11 @@ export default Vue.extend({
         this.on_mount()
         this.hot_key_listeners()
 
+        const mousePositionControl = new MousePosition({
+            coordinateFormat: createStringXY(4),
+            projection: 'EPSG:4326',
+        });
+
         const source = new GeoTIFF({
             sources: [
                 {
@@ -290,6 +299,7 @@ export default Vue.extend({
         });
 
         const map = new Map({
+            controls: defaultControls().extend([mousePositionControl]),
             target: 'map',
             layers: [
                 new TileLayer({
@@ -309,6 +319,13 @@ export default Vue.extend({
         const overlayView = new View({...view})
         map.setView(overlayView)
 
+        map.on('click', (evt) => {
+            console.log(this.mouse_coords, evt.coordinate)
+            this.mouse_coords = evt.coordinate_
+            console.log(this.mouse_coords, evt.coordinate_)
+            console.log("set")
+        })
+
         this.map_instance = map
     },
     methods: {
@@ -327,10 +344,9 @@ export default Vue.extend({
             if (!this.draw_mode) return;
 
             if (this.current_instance_type === 'geo_point') {
-                var lonlat = transform([this.toRadian(e.layerX), this.toRadian(e.layerY)], 'EPSG:3857', 'EPSG:4326');
-                console.log(lonlat)
+                var lonlat = transform([0,0], 'EPSG:3857', 'EPSG:4326');
                 const circleFeature = new Feature({
-                    geometry: new Point(lonlat),
+                    geometry: new Circle(lonlat, 50),
                 });
 
                 const newLayer = new VectorLayer({
