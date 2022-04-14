@@ -62,6 +62,9 @@ import Map from 'ol/Map';
 import TileLayer from 'ol/layer/WebGLTile';
 import OSM from 'ol/source/OSM';
 import View from 'ol/View';
+import Feature from 'ol/Feature'
+import Vector from 'ol/source/Vector'
+import Point from 'ol/geom/Point'
 import 'leaflet/dist/leaflet.css';
 
 export default Vue.extend({
@@ -307,9 +310,6 @@ export default Vue.extend({
         this.map_instance = map
     },
     methods: {
-        on_click_trial: function(e) {
-            console.log(e)
-        },
         on_mount: function() {
             this.history = new History();
             this.command_manager = new CommandManager(this.history)
@@ -325,7 +325,14 @@ export default Vue.extend({
             if (!this.draw_mode) return;
 
             if (this.current_instance_type === 'geo_point') {
-                const point = L.point(e.layerX, e.layerY)
+                var point = new Feature(new Point(this.toRadian(e.layerX), this.toRadian(e.layerY)));
+
+                var layer = new Vector("My Layer");
+
+                this.map_instance.addLayer(layer);
+                layer.addFeatures([point]);
+                return
+                // const point = L.point(e.layerX, e.layerY)
                 const unproject = this.map_instance.layerPointToLatLng(point)
                 const deltas = [this.initial_center[0] - this.current_center[0], this.initial_center[1] - this.current_center[1]]
                 const use_coords = {
