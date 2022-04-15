@@ -72,6 +72,7 @@ import {createStringXY} from 'ol/coordinate';
 import {defaults as defaultControls} from 'ol/control';
 import LineString from 'ol/geom/LineString';
 import {getLength} from 'ol/sphere';
+ import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
 import 'leaflet/dist/leaflet.css';
 
 export default Vue.extend({
@@ -118,10 +119,16 @@ export default Vue.extend({
                         geometry: new Circle(this.draw_init, distance),
                     });
 
+                    const { r, g, b } = this.current_label.colour.rgba
+
                     marker = new VectorLayer({
                         source: new VectorSource({
                             features: [circleFeature],
                         }),
+                        style: () =>  new Style({
+                                fill: new Fill({color: `rgba(${r}, ${g}, ${b}, 0.5)`}),
+                                stroke: new Stroke({color: `rgba(${r}, ${g}, ${b}, 1)`}),
+                            })
                     })
                 }
                 else if (this.current_instance_type === 'geo_box') {
