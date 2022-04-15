@@ -119,16 +119,11 @@ export default Vue.extend({
                         geometry: new Circle(this.draw_init, distance),
                     });
 
-                    const { r, g, b } = this.current_label.colour.rgba
-
                     marker = new VectorLayer({
                         source: new VectorSource({
                             features: [circleFeature],
                         }),
-                        style: () =>  new Style({
-                                fill: new Fill({color: `rgba(${r}, ${g}, ${b}, 0.5)`}),
-                                stroke: new Stroke({color: `rgba(${r}, ${g}, ${b}, 1)`}),
-                            })
+                        style: this.current_style
                     })
                 }
                 else if (this.current_instance_type === 'geo_box') {
@@ -158,6 +153,28 @@ export default Vue.extend({
     computed: {
         cursor: function() {
             return this.draw_mode ? 'crosshair' : 'grab'
+        },
+        current_style: function() {
+            const { r, g, b } = this.current_label.colour.rgba;
+
+            const styleSet = {
+                fill: new Fill({
+                    color: `rgba(${r}, ${g}, ${b}, 0.5)`
+                }),
+                stroke: new Stroke({
+                    color: `rgba(${r}, ${g}, ${b}, 1)`
+                })
+            }
+
+            const style = new Style({
+                ...styleSet,
+                image: new CircleStyle({
+                    radius: 1,
+                    ...styleSet
+                })
+            })
+
+            return style
         },
         undo_disabled: function() {
             return !this.history || !this.history.undo_posible
@@ -360,6 +377,7 @@ export default Vue.extend({
                     source: new VectorSource({
                         features: [circleFeature],
                     }),
+                    style: this.current_style
                 })
 
                 this.map_instance.addLayer(newLayer)
@@ -386,6 +404,7 @@ export default Vue.extend({
                     source: new VectorSource({
                         features: [circleFeature],
                     }),
+                    style: this.current_style
                 })
 
                 this.map_instance.addLayer(newLayer)
