@@ -186,6 +186,7 @@ export default Vue.extend({
             if (this.instance_list) {
                 this.instance_list.get_all().map(instance => {
                     if (instance.type === 'geo_circle') {
+                        console.log('render circle')
                         const already_exists = this.existing_markers.find(marker => 
                             marker._latlng && marker.options &&
                             marker.options.radius === instance.radius && 
@@ -205,6 +206,7 @@ export default Vue.extend({
                         }
                     }
                     else if (instance.type === 'geo_point') {
+                        console.log("render point")
                         const already_exists = this.existing_markers.find(marker => 
                             marker._latlng &&
                             marker._latlng.lat === instance.origin.lat &&
@@ -383,7 +385,8 @@ export default Vue.extend({
                 this.map_instance.addLayer(newLayer)
                 const newPoint = new GeoPoint()
                 newPoint.create_frontend_instance(
-                    {lat: lonlat[0], lng: lonlat[1]}, 
+                    lonlat,
+                    this.mouse_coords, 
                     { ...this.current_label }
                 )
                 this.instance_list.push([newPoint])
@@ -446,7 +449,8 @@ export default Vue.extend({
                 const line = new LineString([this.draw_init, this.mouse_coords]);
                 const radius = getLength(line); 
                 newCircle.create_frontend_instance(
-                    {lat: lonlat[0], lng: lonlat[1]}, 
+                    lonlat, 
+                    this.mouse_coords,
                     radius, 
                     { ...this.current_label }
                 )

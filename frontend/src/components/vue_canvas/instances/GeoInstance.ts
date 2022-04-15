@@ -8,9 +8,10 @@ interface Origin {
 }
 
 export class GeoCircle extends Instance implements InstanceInterface {
-    public origin: Origin;
-    public radius: number;
     public type: string = "geo_circle";
+    public lonlat: Array<number>;
+    public coords: Array<number>;
+    public radius: number;
 
     constructor() {
         super();
@@ -18,8 +19,15 @@ export class GeoCircle extends Instance implements InstanceInterface {
 
     public create_instance() {}
 
-    public create_frontend_instance(origin: Origin, radius: number, label_file: any, soft_delete: boolean = false): void {
-        this.origin = origin;
+    public create_frontend_instance(
+            lonlat: Array<number>, 
+            coords: Array<any>, 
+            radius: number, 
+            label_file: any, 
+            soft_delete: boolean = false
+        ): void {
+        this.lonlat = lonlat;
+        this.coords = coords;
         this.radius = radius;
         this.soft_delete = soft_delete;
         this.creation_ref_id = uuidv4();
@@ -36,7 +44,8 @@ export class GeoCircle extends Instance implements InstanceInterface {
             label_file_id: this.label_file_id,
             soft_delete: this.soft_delete,
             creation_ref_id: this.creation_ref_id,
-            origin: this.origin,
+            lonlat: this.lonlat,
+            coords: this.coords,
             radius: this.radius
         }
         
@@ -80,7 +89,8 @@ export class GeoPoly extends Instance implements InstanceInterface {
 }
 
 export class GeoPoint extends Instance implements InstanceInterface {
-    public origin: Origin;
+    public lonlat: Array<number>;
+    public coords: Array<number>;
     public type: string = "geo_point";
 
     constructor() {
@@ -89,8 +99,14 @@ export class GeoPoint extends Instance implements InstanceInterface {
 
     public create_instance() {}
 
-    public create_frontend_instance(origin: Origin, label_file: any, soft_delete: boolean = false): void {
-        this.origin = origin;
+    public create_frontend_instance(
+            lonlat: Array<number>,
+            coords: Array<number>,
+            label_file: any,
+            soft_delete: boolean = false
+        ): void {
+        this.lonlat = lonlat;
+        this.coords = coords;
         this.soft_delete = soft_delete;
         this.creation_ref_id = uuidv4();
         this.label_file = label_file;
@@ -106,7 +122,8 @@ export class GeoPoint extends Instance implements InstanceInterface {
             label_file_id: this.label_file_id,
             soft_delete: this.soft_delete,
             creation_ref_id: this.creation_ref_id,
-            origin: this.origin,
+            lonlat: this.lonlat,
+            coords: this.coords
         }
         
         return payload
