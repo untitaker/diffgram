@@ -70,6 +70,8 @@ import { transform } from 'ol/proj';
 import MousePosition from 'ol/control/MousePosition';
 import {createStringXY} from 'ol/coordinate';
 import {defaults as defaultControls} from 'ol/control';
+import LineString from 'ol/geom/LineString';
+import {getLength} from 'ol/sphere';
 import 'leaflet/dist/leaflet.css';
 
 export default Vue.extend({
@@ -105,21 +107,22 @@ export default Vue.extend({
         }
     },
     watch: {
-        drawing_instance: function() {
-            if (this.draw_init) {
-                const cal_radius = this.getDistance(this.draw_init, this.drawing_latlng)
-                const marker = L.circle(this.draw_init, {radius: cal_radius, color: this.current_label.colour.hex})
-                this.map_instance.addLayer(marker)
-                this.draw_marker_instance = marker
-            }
-        },
-        drawing_latlng: function() {
+        mouse_coords: function() {
             if (this.draw_init) {
                 this.map_instance.removeLayer(this.draw_marker_instance)
                 let marker;
                 if (this.current_instance_type === 'geo_circle') {
-                    const cal_radius = this.getDistance(this.draw_init, this.drawing_latlng)
-                    marker = L.circle(this.draw_init, {radius: cal_radius, color: this.current_label.colour.hex});
+                    const line = new LineString([this.draw_init, this.mouse_coords]);
+                    const distance = getLength(line); 
+                    const circleFeature = new Feature({
+                        geometry: new Circle(this.draw_init, distance),
+                    });
+
+                    marker = new VectorLayer({
+                        source: new VectorSource({
+                            features: [circleFeature],
+                        }),
+                    })
                 }
                 else if (this.current_instance_type === 'geo_box') {
                     marker = L.rectangle([[this.draw_init.lat, this.draw_init.lng], [this.drawing_latlng.lat, this.drawing_latlng.lng]], {color: this.current_label.colour.hex});
@@ -319,7 +322,7 @@ export default Vue.extend({
         const overlayView = new View({...view})
         map.setView(overlayView)
 
-        map.on('click', (evt) => {
+        map.on('pointermove', (evt) => {
             this.mouse_coords = evt.coordinate
         })
 
@@ -367,17 +370,23 @@ export default Vue.extend({
 
             if (!this.drawing_instance) {
                 this.$refs.map.addEventListener('mousemove', this.move_mouse_listener)
+
+                const circleFeature = new Feature({
+                    geometry: new Point(this.mouse_coords),
+                });
+
+                const newLayer = new VectorLayer({
+                    source: new VectorSource({
+                        features: [circleFeature],
+                    }),
+                })
+
+                this.map_instance.addLayer(newLayer)
+
                 this.drawing_instance = true
-                const point = L.point(e.layerX, e.layerY)
-                const unproject = this.map_instance.layerPointToLatLng(point)
-                const deltas = [this.initial_center[0] - this.current_center[0], this.initial_center[1] - this.current_center[1]]
-                const use_coords = {
-                    lat: unproject.lat - deltas[0],
-                    lng: unproject.lng - deltas[1]
-                }
-                this.drawing_poly_path.push([use_coords.lat, use_coords.lng])
-                this.draw_init = use_coords
-                this.drawing_latlng = use_coords
+                this.drawing_poly_path.push(this.mouse_coords)
+                this.draw_init = this.mouse_coords
+                this.drawing_latlng = this.mouse_coords
                 return
             }
 
@@ -407,9 +416,11 @@ export default Vue.extend({
 
             if (this.current_instance_type === 'geo_circle') {
                 const newCircle = new GeoCircle()
-                const radius = this.getDistance(this.draw_init, this.drawing_latlng)
+                const lonlat = transform(this.mouse_coords, 'EPSG:3857', 'EPSG:4326');
+                const line = new LineString([this.draw_init, this.mouse_coords]);
+                const radius = getLength(line); 
                 newCircle.create_frontend_instance(
-                    {lat: this.draw_init.lat, lng: this.draw_init.lng}, 
+                    {lat: lonlat[0], lng: lonlat[1]}, 
                     radius, 
                     { ...this.current_label }
                 )
@@ -423,11 +434,15 @@ export default Vue.extend({
                 this.drawing_poly_path = []
                 this.$refs.map.removeEventListener('mousemove', this.move_mouse_listener)
                 this.existing_markers.push(this.draw_marker_instance)
+                this.draw_marker_instance = null
                 return 
             }
 
         },
+        // Probably need to delete this listener
         move_mouse_listener: function(e) {
+            // console.log(this.mouse_coords)
+            return
             const point = L.point(e.layerX, e.layerY)
             const unproject = this.map_instance.layerPointToLatLng(point)
             const deltas = [this.initial_center[0] - this.current_center[0], this.initial_center[1] - this.current_center[1]]
