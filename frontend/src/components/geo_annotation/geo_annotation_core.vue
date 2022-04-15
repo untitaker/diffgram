@@ -320,10 +320,7 @@ export default Vue.extend({
         map.setView(overlayView)
 
         map.on('click', (evt) => {
-            console.log(this.mouse_coords, evt.coordinate)
-            this.mouse_coords = evt.coordinate_
-            console.log(this.mouse_coords, evt.coordinate_)
-            console.log("set")
+            this.mouse_coords = evt.coordinate
         })
 
         this.map_instance = map
@@ -344,9 +341,9 @@ export default Vue.extend({
             if (!this.draw_mode) return;
 
             if (this.current_instance_type === 'geo_point') {
-                var lonlat = transform([0,0], 'EPSG:3857', 'EPSG:4326');
+                const lonlat = transform(this.mouse_coords, 'EPSG:3857', 'EPSG:4326');
                 const circleFeature = new Feature({
-                    geometry: new Circle(lonlat, 50),
+                    geometry: new Point(this.mouse_coords, 50),
                 });
 
                 const newLayer = new VectorLayer({
@@ -355,48 +352,16 @@ export default Vue.extend({
                     }),
                 })
 
-                const view = new View({
-                    center: lonlat,
-                    zoom: 19,
-                })
-
                 this.map_instance.addLayer(newLayer)
-                this.map_instance.setView(view)
-
-                return 
-                var point = new Feature({
-                    geormetry: new Point(this.toRadian(e.layerX), this.toRadian(e.layerY))
-                });
-                
-                const sourceVector = new VectorSource("My Layer")
-                sourceVector.addFeature(point)
-                var vectorLayer = new VectorLayer({
-                    source: new VectorSource({
-                        features: [point],
-                    }),
-                })
-
-                this.map_instance.addLayer(vectorLayer);
-                return
-                // const point = L.point(e.layerX, e.layerY)
-                const unproject = this.map_instance.layerPointToLatLng(point)
-                const deltas = [this.initial_center[0] - this.current_center[0], this.initial_center[1] - this.current_center[1]]
-                const use_coords = {
-                    lat: unproject.lat - deltas[0],
-                    lng: unproject.lng - deltas[1]
-                }
                 const newPoint = new GeoPoint()
                 newPoint.create_frontend_instance(
-                    {lat: use_coords.lat, lng: use_coords.lng}, 
+                    {lat: lonlat[0], lng: lonlat[1]}, 
                     { ...this.current_label }
                 )
                 this.instance_list.push([newPoint])
                 this.drawing_poly_path = []
                 const command = new CreateInstanceCommand([newPoint], this.instance_list)
                 this.command_manager.executeCommand(command)
-                const marker = L.circle(use_coords, {radius: 1, color: this.current_label.colour.hex})
-                this.existing_markers.push(marker)
-                this.map_instance.addLayer(marker)
                 return
             }
 
