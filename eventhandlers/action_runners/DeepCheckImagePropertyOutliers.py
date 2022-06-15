@@ -68,8 +68,8 @@ class DeepcheckImagePropertyOutliers(ActionRunner):
     def execute_action(self, session):
         # Your core Action logic will go here.
         vision_ds = DiffgramVisionDataset(session = session, diffgram_dir_id = 1)
-        dataset_loader = DataLoader(batch_size = 1000, num_workers = 2, dataset = D)
+        dataset_loader = DataLoader(batch_size = 1000, num_workers = 2, dataset = vision_ds)
         # TODO: Load and transform diffgram dataset
-        train_data = load_dataset(train = True, object_type = 'VisionData')
+        train_data = load_dataset(dataset_loader, batch_size = 1000, num_workers = 2)
         check = ImagePropertyOutliers()
         result = check.run(train_data)
