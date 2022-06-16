@@ -1,13 +1,15 @@
 from action_runners.ExportActionRunner import ExportActionRunner
 from action_runners.TaskTemplateActionRunner import TaskTemplateActionRunner
 from action_runners.AzureTextAnalyticsSentiment import AzureTextAnalyticsSentimentAction
+from action_runners.HuggingFace import HuggingFaceZeroShotClassificationAction
 from action_runners.ActionRunner import ActionRunner
 from shared.database.action.action import Action
 
 ACTION_RUNNERS_KIND_MAPPER = {
     'create_task': TaskTemplateActionRunner,
     'export': ExportActionRunner,
-    'AzureTextAnalyticsSentimentAction' : AzureTextAnalyticsSentimentAction
+    'AzureTextAnalyticsSentimentAction' : AzureTextAnalyticsSentimentAction,
+    'HuggingFaceZeroShotClassification': HuggingFaceZeroShotClassificationAction
 }
 
 
