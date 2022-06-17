@@ -22,7 +22,7 @@ analytics-python==1.2.9
 python-dateutil==2.6.0
 memory-profiler==0.55.0
 werkzeug == 0.16.0
-cryptography==3.4.7
+cryptography==37.0.2
 colorlog==4.2.1
 boto3==1.16.4
 alembic==1.4.2

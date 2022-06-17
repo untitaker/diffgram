@@ -13,8 +13,7 @@ env_adapter = EnvAdapter()
 try:
     from shared.settings.secrets import *
 except Exception as e:
-    print('Error loading secrets: ')
-    print(e)
+    pass
 
 
 # Main Settings
@@ -33,7 +32,8 @@ DATABASE_CONNECTION_POOL_SIZE = int(os.getenv('DATABASE_CONNECTION_POOL_SIZE', 1
 USER_PASSWORDS_SECRET = os.environ.get('USER_PASSWORDS_SECRET', 'secret_for_users')
 SECRET_KEY = os.environ.get('SECRET_KEY', 'secret_key')
 INTER_SERVICE_SECRET = os.environ.get('INTER_SERVICE_SECRET', 'default_inter_service_secret')
-# Default key generated randomly. Please Do not use in production!!
+
+# Default for playground only. Do NOT use default in production!!
 FERNET_KEY = os.getenv('FERNET_KEY', 'NeL_RED6zZ1XF3XT7Yd1hzFPYyebrg6UdkECTOLHEdI=')
 
 
@@ -209,7 +209,6 @@ print("PROCESS_MEDIA_TRY_BLOCK_ON", PROCESS_MEDIA_TRY_BLOCK_ON)
 print("PROCESS_MEDIA_REMOTE_QUEUE_ON", PROCESS_MEDIA_REMOTE_QUEUE_ON)
 print("PROCESS_MEDIA_ENQUEUE_LOCALLY_IMMEDIATELY", PROCESS_MEDIA_ENQUEUE_LOCALLY_IMMEDIATELY)
 
-print("DIFFGRAM_MINIO_DISABLED_SSL_VERIFY", DIFFGRAM_MINIO_DISABLED_SSL_VERIFY)
 print("DIFFGRAM_SYSTEM_MODE", "DIFFGRAM_SYSTEM_MODE ", DIFFGRAM_SYSTEM_MODE)
 # Test everything loaded as expected.
 print("DATABASE_URL", "DATABASE_URL ", bool(DATABASE_URL))
