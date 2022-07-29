@@ -1,0 +1,1221 @@
+Return-Path: <bounces+22220194-b967-markus-honeypot=unterwaditzer.net@em8511.diffgram.com>
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	 by sloti42n12 (Cyrus 3.7.0-alpha0-757-gc3ad9c75d3-fm-20220722.001-gc3ad9c75) with LMTPA;
+	 Wed, 27 Jul 2022 14:46:30 -0400
+X-Cyrus-Session-Id: sloti42n12-1658947590-706278-2-9679224353305755427
+X-Sieve: CMU Sieve 3.0
+X-Spam-known-sender: no
+X-Spam-sender-reputation: 500 (none)
+X-Spam-score: 7.5
+X-Spam-hits: BAYES_50 0.8, DCC_CHECK 1.1, HTML_MESSAGE 0.001, ME_HAS_VSSU 0.001,
+  ME_SENDERREP_NEUTRAL 0.001, ME_VADE_X1 0.001, RCVD_IN_BL_SPAMCOP_NET 2,
+  RCVD_IN_MSPIKE_H2 -0.001, SENDGRID_REDIR 1.498, SPF_HELO_NONE 0.001,
+  SPF_PASS -0.001, T_KAM_HTML_FONT_INVALID 0.01, URIBL_GREY 0.424,
+  URI_TRY_3LD 1.687, LANGUAGES en, BAYES_USED user, SA_VERSION 3.4.6
+X-Spam-source: IP='149.72.34.12', Host='wrqvnnhc.outbound-mail.sendgrid.net',
+  Country='US', FromHeader='com', MailFrom='com'
+X-Spam-charsets: subject='UTF-8', plain='us-ascii', html='us-ascii'
+X-Resolved-to: markus@unterwaditzer.net
+X-Delivered-to: markus-honeypot@unterwaditzer.net
+X-Mail-from: bounces+22220194-b967-markus-honeypot=unterwaditzer.net@em8511.diffgram.com
+Received: from mx1 ([10.202.2.200])
+  by compute3.internal (LMTPProxy); Wed, 27 Jul 2022 14:46:30 -0400
+Received: from mx1.messagingengine.com (localhost [127.0.0.1])
+	by mailmx.nyi.internal (Postfix) with ESMTP id 3265623C00CD
+	for <markus-honeypot@unterwaditzer.net>; Wed, 27 Jul 2022 14:46:30 -0400 (EDT)
+Received: from mx1.messagingengine.com (localhost [127.0.0.1])
+    by mx1.messagingengine.com (Authentication Milter) with ESMTP
+    id 41CA2C01D16;
+    Wed, 27 Jul 2022 14:46:30 -0400
+ARC-Seal: i=1; a=rsa-sha256; cv=none; d=messagingengine.com; s=fm3; t=
+    1658947590; b=hdqTj4Ac0JRZzDQCv/Dj8Gmnn3/ps1E8QRp/wdngnABZYH8fFb
+    1h3W7SEELXfZfFqosVqD1OmkaJ1BXcqzrHjHJenKuQayflf6JbpLDfmnTHAgxYIY
+    rPU/sLPEH5CsuRjqdWYoDgtsjYneOhGu+ek3Lh/3c7BzClUmLdND9UpkRTEZJn2+
+    1qtlnauz+ZlLHd1sUZtXHRhVLbNVeCBAI+zE8IwngQCl0cewTQVYrd/hBYgWweBV
+    4rvJQeUYTFDM8XkbCxE+HN8uDif4Wc2xyM6jVyjIki5EAfdbUzdi4TuuH0c0FmFE
+    tQUHE6ODcjk7F0LLszEm29Oc3AqnxfF6UJ7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=
+    messagingengine.com; h=content-type:date:from:mime-version
+    :message-id:subject:reply-to:to:list-unsubscribe; s=fm3; t=
+    1658947590; bh=afVINrMh/hIsuVgwwO76u3x/t01xaow8TkNidlxNBNo=; b=e
+    To1oVXj/Hh6dCYf/ztjotxBFBhyHIILJWzje1LKjWWp3zDFmuD7qEbLpDivnNj3X
+    9RiHf5ehjT3bRglnB/0+ZP/AKQ+DXExLNW/qA6+fFjgjbRd3m3taMDwV2TVe2rm9
+    4EUrPKjEBNmoJ3znvk9+F2ThSgy8oe88QemHey20m6fImUSanVhDDJvdM1d5LzPk
+    YV73CnRbKMKVNn4PwgYftOQkgW5V4XPz8AhDNPCwm4KSpgUn2khG1eg4exWU+Ggp
+    Z/Q6nqgr6RVoF1+U84Hhkcy9wYpAhrZGLDnx0Qy/osPAXkNwfyk73RjbI6/Cwdee
+    +VtUGIKfmHafP1ER5WHXA==
+ARC-Authentication-Results: i=1; mx1.messagingengine.com;
+    x-csa=none;
+    x-me-sender=none;
+    x-ptr=pass smtp.helo=wrqvnnhc.outbound-mail.sendgrid.net
+    policy.ptr=wrqvnnhc.outbound-mail.sendgrid.net;
+    bimi=skipped (DMARC did not pass);
+    arc=none (no signatures found);
+    dkim=pass (2048-bit rsa key sha256) header.d=diffgram.com
+    header.i=@diffgram.com header.b=HmQpQmVz header.a=rsa-sha256
+    header.s=s1 x-bits=2048;
+    dmarc=none policy.published-domain-policy=none
+    policy.applied-disposition=none policy.evaluated-disposition=none
+    (p=none,d=none,d.eval=none) policy.policy-from=p
+    header.from=diffgram.com;
+    iprev=pass smtp.remote-ip=149.72.34.12
+    (wrqvnnhc.outbound-mail.sendgrid.net);
+    spf=pass
+    smtp.mailfrom=
+    "bounces+22220194-b967-markus-honeypot=unterwaditzer.net@em8511.diffgram.com"
+    smtp.helo=wrqvnnhc.outbound-mail.sendgrid.net
+X-ME-Authentication-Results: mx1.messagingengine.com;
+    x-aligned-from=orgdomain_pass (Domain org match);
+    x-return-mx=pass header.domain=diffgram.com policy.is_org=yes
+      (MX Records found: alt3.aspmx.l.google.com,alt4.aspmx.l.google.com,aspmx.l.google.com,alt1.aspmx.l.google.com,alt2.aspmx.l.google.com);
+    x-return-mx=pass smtp.domain=em8511.diffgram.com
+      policy.org_domain=diffgram.com policy.is_org=no
+      (MX Records found: mx.sendgrid.net);
+    x-tls=pass smtp.version=TLSv1.3 smtp.cipher=TLS_AES_256_GCM_SHA384
+      smtp.bits=256/256;
+    x-vs=commercial:mce score=17 state=11
+Authentication-Results: mx1.messagingengine.com;
+    x-csa=none;
+    x-me-sender=none;
+    x-ptr=pass smtp.helo=wrqvnnhc.outbound-mail.sendgrid.net
+      policy.ptr=wrqvnnhc.outbound-mail.sendgrid.net
+Authentication-Results: mx1.messagingengine.com;
+    bimi=skipped (DMARC did not pass)
+Authentication-Results: mx1.messagingengine.com;
+    arc=none (no signatures found)
+Authentication-Results: mx1.messagingengine.com;
+    dkim=pass (2048-bit rsa key sha256) header.d=diffgram.com
+      header.i=@diffgram.com header.b=HmQpQmVz header.a=rsa-sha256
+      header.s=s1 x-bits=2048;
+    dmarc=none policy.published-domain-policy=none
+      policy.applied-disposition=none policy.evaluated-disposition=none
+      (p=none,d=none,d.eval=none) policy.policy-from=p
+      header.from=diffgram.com;
+    iprev=pass smtp.remote-ip=149.72.34.12
+      (wrqvnnhc.outbound-mail.sendgrid.net);
+    spf=pass
+      smtp.mailfrom=
+      "bounces+22220194-b967-markus-honeypot=unterwaditzer.net@em8511.diffgram.com"
+      smtp.helo=wrqvnnhc.outbound-mail.sendgrid.net
+X-ME-VSSU: VW5zdWI9aHR0cHM6Ly91MjIyMjAxOTQuY3Quc2VuZGdyaWQubmV0L2FzbS8_dXNlcl9pZD
+    0yMjIyMDE5NCZkYXRhPU5jWlJ4VmJiVXhJel9hbi01ajRfeGl6bzBDV2ViZ3Fla1VGUHdn
+    ZUpfbHhvTURBd2RUQXdNQVY2ZmR1c3psOENuUF9yZUczOUg2NkRHNlJrQ1M5dVpDanN0Mn
+    ZySlZNRHo2WGRlUFhqYkdyX3EwME5MNmlkckMtX1NERWFJcmJZbUJMcGhOWWpxazNnQUxK
+    VExWX0xIWWFnTlllZi1YNmlaa2JfR2NBMkFzSjZnUjA4d0MxbTBKQkRjRUV6QjhPb3Y1cm
+    8xY2xvVVoxRmdBbWFjMnowR0tVNldOY01xdGxibVRGUTU0RHdsbjNXbnFtdHpybi16cEdl
+    X0hlcEdybXpGUGxFb3g3bTJiTG8tbm1tNzg0aHEzYWc4b3U1RnFXSTZ2YTNTNGlhX25oZW
+    VOS0l2S0J5REppazZRcmE1b0tWb18teUh2dl9OOUJMV0xiVjVHdEVIWGZWcG1VNjQzbUJH
+    R2FheTFpQlRjODlnSERXdlRnNUR1aHk3S1gxQ3BCZ3dCTUFsWEJkM3E0eUFFc0Z1VDdoZE
+    xVQzhPeW1IOTQxaVl6cHlOUW42TEc3elZUTllFMnhTQXN6NGh3TzRRLXVXMVJub2twTktM
+    OGFURmsyLURUYUt1OVhCY2ZBMkM0RmttYUxkYTVyRnhsZlNrSVNhaDNlT2V4WGdLT1ZJVH
+    ZRdnRoMGZ6SmZSZ045bDZKVHZZQWRLRVF1aTZna290SXB3VDNQdmhoMFRDRkc1aFQyU2Za
+    Q1pZaFVPV1pYeU8tY1JiYm9iZzhXTjZoLXhlQXVFQWNVLXNjSnpndHRPdDAzQzhUSXdac1
+    Vfbm55NlFyZXJjbi02WEF3S0FvVGFpN1JYQ2dNdjNYay1vckNwQXN3VWgyTVNsZXNYaGdq
+    VnhQX18wQi00OUd2MW5lWE9TOENteVRnODlKQmltbndZUEFBbHljZ2tpQ2h0Smh5d19wc0
+    1jbmNxTWFYTGtka2hJNjhON3ZJZHJ1eHhNaTEyVUhVbEFNeW96TXZPM0FZWEJCcFh1bHp6
+    aW1pbXRlRERoamJ2ZEt6eXBfQmEtQ1BUVFNzYkd4U2lkbWVnbW1malNDaDg5a1FxZjd6OX
+    JieVRQWllxdFJ6MGJaNGhVTjM5YjAyMUNFZnROSzRKekZxZGU1TExxSTFuaWF2dTlDWHlE
+    MHp0X29yMmxDcno2bzJhTGxJNHJ0aVAyM3ZQWnRWM1BlYlF1TTV3cHdGd2dBODdaWEJCeG
+    t4VnFhazdWdWRvMW5TS2pfakY3RFVheDYwSVBlb3Zjc29YVURua0oyNFpFTXhNd2tDeU5L
+    N3EyWTBLNkZ4WkRjdlFhenBleFBPOVpOSHNzX0Nvb042SE1mOVg4Z1JVNHJlTnVWaTFjWD
+    A4R2xCSmcwNHhaN00tOFRQVXBodk1wc2NSeFc5cENQMFRiWU9rRmp5SHFKdVhGbEJyNGNY
+    QS1COVYya2tnZnlNWEJqWHNSOC0zYWdrTGNRbVduS1RqclcxUjNEejNmbncxTUlkZ3JOZF
+    9OeG5DV1dhLTB1TDFWczZfZ2FNa1RGYWlKMXdhUm5NcEdETXQ3dkEtMVdCS1FZdXdsMkhv
+    Y25xRmhheG00S3AwQT09
+X-ME-VSSU: VW5zdWI9aHR0cHM6Ly91MjIyMjAxOTQuY3Quc2VuZGdyaWQubmV0L2FzbS91bnN1YnNjcm
+    liZS8_dXNlcl9pZD0yMjIyMDE5NCZkYXRhPVdHU3dCM2MtSm1NUVdFbjF1YlVfVWJsSlYx
+    UEE0V1I4Z3ZHX056TXVZMGhvTURBd2RUQXdNSm82Y0tpX1poaUxPNFZvUkwwaW5pMzR0R3
+    BNYVNwaDB6RllRT3NlQUxDVGI3OWxrMUFQZHVaTGFyckl2UTd4elVKSnJXQURBamdhQ0ZL
+    ampKVzJIcm9MUmRidVd0MTJMLVE4eHQwUGhfLUlUYW8tUHNCUjZmbmt3M1A1dlVGclBGQ1
+    FPWW5kbzhRNWdDRnhEU3hReV9yWVlQZGMzeGhaZGROcmkxYmNydmxldUdaNUU0X1cycmg1
+    UmpRVldqN0lpVmxNSHBuR3p1YTdpLUNhdnU2dmRNbktUMEVUQTFfUHlhT1BFbkRHQXp0dE
+    1FSHgya1JtZERFd3FWdkx6b2tQNnBLajRNb2I1U1VLRGhMT3A5ZWtnNk1PX3VCTjNSaGpu
+    enZsdDdGc3MyMm00cF9JQlpfSmhnZVZEbHpGbjhncmJsc095WjJUOGsyY0ZfWXJPSVFheU
+    NfcU5JXzZfY2NhU0tsQmxURVVjWHRVaEw4NHJIQ3pzZUFMdmhDTHo3dnNnZ096V0UxNjBR
+    eWtscS1Mbi1WbU92bkNTZDVzSkFBSmwwTU91aHE5UkVGY2s5b1RkZUc3N2laU3FfWk0xZF
+    pMUXpsUzRWVlF4LTQ2Rm1SYWw0bXVSUjZCSlVlejZ1QUU5TWNrUVpmOUQ1bVpfU0o5Q1Fn
+    Qnh2REF3ekx5eWI2UzFSRDJraVBDdlQ0VW5CME8yLThQVVFUQ1VLc2NuWGx4YmxoYTI4UD
+    h6MXZEREpCLWtDTm1jOU5tQ1dMMTZmbjRELTcyV0V3QWNDLXVRbVRlVE1nWUV5VkhfUXBu
+    T3Yzc1U5eXZ3SjhvTnBqdlBsUm5ORHRxRGd5Nk5sWTF1M25rRW9BQmxsU0psdHNNR3lZRE
+    5RXzk5d3B0c1RLRFkzSV85MDNhN21qM2tOOE9xLV9RN0dtTVNHSk5kcnVncUN3a09paVI5
+    R3RqU3p6Q00yNWFkSUZoZzJVSE1uQUsyb3E1WkV5amkzSjMwQkt5N2hQME00MGRkRktiSm
+    9NaTRCQUJtOTVEZkt1Q0pDNWltVFdKSmpoVlJodGNUd1ZYa1B5TWNvVEZ2YzgxMWo1dnJS
+    N28wRENDM3V3dDE2UHd4TU1nN2lhN2JNMkdlNkdqZW1JVFJpUThwckNrOWM2dTVUVVotLX
+    pkaUw5Q3BLRUJDR1FuQVlsMWNEZzBnZGVfbG9uSkpEQlprUHctQnFYUU82VnZfOHA1cG5s
+    dnh6MGcxRGo3MkRLS1JMTEtWMkJ0OGwxVFdDS29JMG5ILXlOWno0d0V5Skdrb25aVC1yMW
+    hhdXBkQXN3M29OUldVVmJTRXZybE9sZEJUZVpEMnBUa3dmQnducXBrNmgwclF2YjJRM0Vn
+    cXo0NTJXNmJLVjE5YlRiMzl3R1hVXzF0M3doYk1peEdlcEg0Z1pwUk5sMG5GVzQtWkxlcD
+    ZUNTJxTDRINmVUNmVpWHRMa2YwcHNQT0ctdVpPSm1TbHJNWUpuQkpzelRmcGpsNXBMZlNY
+    VE9kNWVGd0pkaUNvUTB5aVVtdllqTHlXcVhZcC16SE5ma205NWtMU2tYc20xaz0
+X-ME-VSSU: VW5zdWI9bWFpbHRvOnVuc3Vic2NyaWJlQGVtODUxMS5kaWZmZ3JhbS5jb20_c3ViamVjdD
+    0yMjIyMDE5NC54WE5JVTY5SF84TmdKUlJDU3VmZXVuVkNmTFFzajVpTDNrX1JCY0FaNkNW
+    b01EQXdkVEF3TUdGV2dzWnZKbDNtY0EybkZ0VnRJNGxxNWw1MXNJaVVYR2FnYXpSbkQ4QW
+    lLaXl0NXN5VEJoM3Z5VWFENDk3ak9TQWdzRUJHZVNoanJNWjk3UnRidE15NHBuZ091S2hX
+    YlJVbENxLWc0Nzk2dTlfMm5PNGRscUJ4UHFsU0dNalA4TkNfc0NVOV9CR3VQeWpZM0dxWj
+    Q5bz0uaE12aWpKQWV6bmNXOGcta0I1ZWNqTXh2VFNGWFBsMi1rNWhOSVhLN2VFSm9NREF3
+    ZFRBd01OLVpiY2k0ZThJVHV2QXRscGp6YmpuemVIU0NBbVVxZ2ZJUFZhM0Rsa2MyU1ZJUV
+    laSlJ3RnU0dDZyRm81NDN6RnZnR21ueFlXMjBtYWUtM3poNTZ3a21CN3MteDBkNjFxUkpJ
+    V3drX3Q3Y1RiTDNUbEU2c2MyallmNWlqNWg1MUVZbnNGRlREN2xDUVB1TkV5TWxkQXB5T3
+    E0RlRZekdCSWVUQUpJLUUzdVJiQXpKeTVqdWh6NkZZQ3prTjJZcDJiZFk2VktRVm1oN0VC
+    ci1QMUpVNHFnOUI1cjMyU0YwRzMtb2F4cHlnaFp0LUVQVS1VdUs1b2hlSlFUNklqT0FpUl
+    FhS3d3dVZEWDFHODYtQjBOd0hISlVqWjlVWnB1eWMwN3RKZjJpdHV2aXdfNGM4MWI0UkdC
+    SmJsZEdMSC1tLWRTZTh2alV6eW9HYmZITDhGT1BHcWt3WEdEOEtIaWpGaHNnWjc3SFRwQ2
+    p2NV9mUkJwdUoxZEZmejFvcXozdG1HQzRFWWM5eHhfNnNJZjg0WUpmRDdCSnRtV2FQQ1Ex
+    WkhRb3B5NzB3YXZpeTBOTzIxdGhnUko5Y3FOLXpMT255TGJKTlpvWjlEODZPcmdiM09hWD
+    RJT3Z0bnlGS2haWmhOTEJ5bjJWWXNVUElIZW9VclYxeFZZQ3lVemM4aTdnVnVoWXByVkg0
+    c3FYbHZMSHRrdDRtNnJJR1d2ZXZVMWVrZHk4bGhKeGlGaUV4Yy1aWDU0ODdkSGJxME84N3
+    NWUm5sbDhLVTNRVE5MdnJvTjhtaDdTejFTWnRLTmE3eXBHWmNMbHhvV1dHR29JWlg2RmZr
+    amhXdWRoOS1PcmZEbXEweW0yV1FkMnpvR1dNUmNlOThZUHNvbUNtUUticXBkNlNYQ09rdW
+    xyQlNHVVVNR04wWkNHNmFJdjRnZFdMQkpoNWQybHdGWVN4Wjh5anp5YkhBMFBVZGkwT3RQ
+    cmhJampueDljLV8tY3g0OU40bm5fNk9mbF9ZWng2cndiTGlWTk9oQkExY2c0aTRLNFY4al
+    diQXhHdTBtalB1ejN6RGFBWkJaczBFdk4zMEJVN2x3U3c2cDVVdVJFTFJrTzQwZDRSSWhV
+    SEpGLTBrTkdzcGNyUWRXR2dib2lHNV9CelhXejcxcUVDS3NVWVZGSTFLZ0ltdFE5UG10dF
+    c5UGtGQ1ZkdnQ0d3NGVTZSbkR6OW5CQ0p5RVUxZ2pwN1JPWktOUEVjSjJCUWFsWS1weVVP
+    MXp0VjYzQmFQWWxMYTlTV0xrd3oxOEI0OFhaMkM2VHR4c0RlRWd4U1ZFPQ
+X-ME-VSCause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdduvddgudeftdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecundfotefknffkpffiuc
+    dludejmdenucfjughrpegtfffhggfkufhrvffjsegrtddtredttdejnecuhfhrohhmpeff
+    ihhffhhgrhgrmhcukfhntgcuoehmrghrkhgvthhinhhgseguihhffhhgrhgrmhdrtghomh
+    eqnecuggftrfgrthhtvghrnhepueejleelveefkeffieevhedtgefhvdfgvdehjeejtdeg
+    tedtveehfeejteejfefgnecuffhomhgrihhnpehsvghnughgrhhiugdrnhgvthenucfkph
+    epudegledrjedvrdefgedruddvnecuufhprghmkfhppedugeelrdejvddrfeegrdduvden
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedugeelrdejvddrfe
+    egrdduvddphhgvlhhopeifrhhqvhhnnhhhtgdrohhuthgsohhunhguqdhmrghilhdrshgv
+    nhgughhrihgurdhnvghtpdhmrghilhhfrhhomhepoegsohhunhgtvghsoddvvddvvddtud
+    elgedqsgelieejqdhmrghrkhhushdqhhhonhgvhihpohhtpehunhhtvghrfigrughithii
+    vghrrdhnvghtsegvmhekheduuddrughifhhfghhrrghmrdgtohhmqe
+X-ME-VSScore: 17
+X-ME-VSCategory: commercial:mce
+X-ME-CSA: none
+Received-SPF: pass
+    (em8511.diffgram.com: Sender is authorized to use 'bounces+22220194-b967-markus-honeypot=unterwaditzer.net@em8511.diffgram.com' in 'mfrom' identity (mechanism 'include:sendgrid.net' matched))
+    receiver=mx1.messagingengine.com;
+    identity=mailfrom;
+    envelope-from="bounces+22220194-b967-markus-honeypot=unterwaditzer.net@em8511.diffgram.com";
+    helo=wrqvnnhc.outbound-mail.sendgrid.net;
+    client-ip=149.72.34.12
+Received: from wrqvnnhc.outbound-mail.sendgrid.net (wrqvnnhc.outbound-mail.sendgrid.net [149.72.34.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1.messagingengine.com (Postfix) with ESMTPS
+	for <markus-honeypot@unterwaditzer.net>; Wed, 27 Jul 2022 14:46:29 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=diffgram.com;
+	h=content-type:from:mime-version:subject:reply-to:to:list-unsubscribe:
+	cc;
+	s=s1; bh=afVINrMh/hIsuVgwwO76u3x/t01xaow8TkNidlxNBNo=;
+	b=HmQpQmVzcFLCm9QZ95m7OwW6Ig8T5etykfrzZz9/yZ9aP649DNSqk/cjdHmHODPEIJqq
+	08e3KqhwfiJNT7VEySM/NzVblXzcjB/xFYeRJuHe5K+/3b2Gfy0vvBBRj4PlWsDZKBNKKw
+	JxGiclV87krnRwesNWVca7+l1oe/+TXPSswPDVn+BMEp2Ixh+2myHBSzXs826VEhoaMg59
+	Bh0w6f4cJNNp+DlQV44X2oCL+CmYfN9BuFP9ifVKDHbQOIUBMnN3oV7pNY04iT3UX9urU9
+	dYjovCfdTt0sWLZEgZfXX4xpJ25ael2C9fBE1tCxEQNlYvnYEqH3bGZJ7zUaXCIg==
+Received: by filterdrecv-759d9b4788-8ch22 with SMTP id filterdrecv-759d9b4788-8ch22-1-62E187FE-74
+        2022-07-27 18:46:22.704366784 +0000 UTC m=+513723.069078359
+Received: from MjIyMjAxOTQ (unknown)
+	by geopod-ismtpd-1-2 (SG) with HTTP
+	id RZzONc8JScei-VjESDRtEQ
+	Wed, 27 Jul 2022 18:46:22.593 +0000 (UTC)
+Content-Type: multipart/alternative; boundary=c2c3980d3cb7004cd5d07d3b17941cd1ecb15f97da265de5d6246e9cc609
+Date: Wed, 27 Jul 2022 18:46:27 +0000 (UTC)
+From: Diffgram Inc <marketing@diffgram.com>
+Mime-Version: 1.0
+Message-ID: <RZzONc8JScei-VjESDRtEQ@geopod-ismtpd-1-2>
+Subject: =?UTF-8?B?8J+MjQ==?= New Open Source Global ML
+Reply-To: marketing@diffgram.com
+X-SG-EID: 
+ =?us-ascii?Q?gmY7mD=2FCULmpZ5U1QV2=2F+5n34EhzBp2guBA2VJiZo0B9wFx17kbhxEJM0yU1FL?=
+ =?us-ascii?Q?7REjps8w88m=2FxRK7h+VPlH5LTMacRWjY20VBiTf?=
+ =?us-ascii?Q?hMYs9mj0x1MXkZ2Sh+RT6Api=2F7fme5Rze0Hw3B0?=
+ =?us-ascii?Q?hw8gtbTIvJrtfu6tzY262F9j5+saQbKw9IVj5dO?=
+ =?us-ascii?Q?XqAXhGNPCeaO+3P0P7DweLwwWq=2FO=2F8vOG+QeYbc?=
+ =?us-ascii?Q?y=2FXVTcHnH9XoDFAT1RdBjtLp6RAe17PQZhbry1n?=
+ =?us-ascii?Q?vFLTXmgokHdNASliAvciQ=3D=3D?=
+X-SG-ID: 
+ =?us-ascii?Q?se=2F49CGmbS0sfR97ImeXvDoOrI1ra2UfBi=2FYp+tM4sZNnFcdeo8cVPRMz3vfJ1?=
+ =?us-ascii?Q?B4lB8ss1VLTXJ6ibLPDs95VBUlMzbRCfT5eXVrQ?=
+ =?us-ascii?Q?W0=2FHUFKKv4p4W2xNCxp4rD7iaKwbxV04Xd=2FHAK6?=
+ =?us-ascii?Q?0fBItswnT9iQnv6kjAqfjLMhPvYma4WUTYbuO7r?=
+ =?us-ascii?Q?ZpAAozLnx2QyBPBAE9Meh9gtmIaoak5xKLJ0Lyo?=
+ =?us-ascii?Q?Brp2CuvlFNCjP5Nl=2F0ilmjW2XDoxLWs8fMvrkTY?=
+ =?us-ascii?Q?T45YPrHSWJM1cvXmoJyeTCJAzZFQMIlLQ4FLPB9?=
+ =?us-ascii?Q?vwn6+mF91jePVxXs4DWZpSG5zFbC4cEaGo8CYTr?=
+ =?us-ascii?Q?BOdWCDArKoVc5IgILLRKGBZFewA018TwEXZdNi6?=
+ =?us-ascii?Q?KNShP2NwGJQ2Jx+CgvznNXzYDUSf78GtRilJ+6r?=
+ =?us-ascii?Q?UikHhA3E4tfsb4xN8WKzFjdYDGTSljOm7tT75Se?=
+ =?us-ascii?Q?aAPz5MXwSgnsMeKf9bHe+kFWoa5xXFWSwqdfd=2F5?=
+ =?us-ascii?Q?CyJ9kwdOc6as2FVaHhjCxCQ9vltwv2c1EVB6ns6?=
+ =?us-ascii?Q?1kbRAgx=2F7OvDM439RCXdU9VuMwWUfTy86Pfz6gQ?=
+ =?us-ascii?Q?53sLrL4qCKhv8V0pu1kXHdebD+Z=2F1eEBTsE9yYK?=
+ =?us-ascii?Q?TyRhoelbRN7rpjstPWWe9SfO0KPETOvwCtAdk29?=
+ =?us-ascii?Q?0jRxxKCmpqmgXRtT0gp=2FNFpDDqx6Is=2F93kybKW6?=
+ =?us-ascii?Q?4IcA45cAN=2FTHGtsqI=2FqJp4hxUUbFlq7tlUpYv4e?=
+ =?us-ascii?Q?RkIsV5emYEb2U9KU9I5kz717MuuieU68EaoDFsM?=
+ =?us-ascii?Q?2TmC7QBz0KrwgiBd=2FQ34dlpqHw=3D=3D?=
+To: markus-honeypot@unterwaditzer.net
+X-Entity-ID: GApNHR2X9Awy1AlAIGbnwA==
+List-Unsubscribe: 
+ =?us-ascii?Q?=3Cmailto=3Aunsubscribe=40em8511=2Ediffgram=2Ecom=3Fsubject=3D22220194=2ExXNIU?=
+ =?us-ascii?Q?69H=5F8NgJRRCSufeunVCfLQsj5iL3k=5FRBcAZ6CVo?=
+ =?us-ascii?Q?MDAwdTAwMGFWgsZvJl3mcA2nFtVtI4lq5l51sIi?=
+ =?us-ascii?Q?UXGagazRnD8AiKiyt5syTBh3vyUaD497jOSAgsE?=
+ =?us-ascii?Q?BGeShjrMZ97RtbtMy4pngOuKhWbRUlCq-g4796u?=
+ =?us-ascii?Q?9=5F2nO4dlqBxPqlSGMjP8NC=5FsCU9=5FBGuPyjY3GqZ?=
+ =?us-ascii?Q?49o=3D=2EhMvijJAezncW8g-kB5ecjMxvTSFXPl2-k5?=
+ =?us-ascii?Q?hNIXK7eEJoMDAwdTAwMN-Zbci4e8ITuvAtlpjzb?=
+ =?us-ascii?Q?jnzeHSCAmUqgfIPVa3Dlkc2SVIQYZJRwFu4t6rF?=
+ =?us-ascii?Q?o543zFvgGmnxYW20mae-3zh56wkmB7s-x0d61qR?=
+ =?us-ascii?Q?JIWwk=5Ft7cTbL3TlE6sc2jYf5ij5h51EYnsFFTD7?=
+ =?us-ascii?Q?lCQPuNEyMldApyOq4FTYzGBIeTAJI-E3uRbAzJy?=
+ =?us-ascii?Q?5juhz6FYCzkN2Yp2bdY6VKQVmh7EBr-P1JU4qg9?=
+ =?us-ascii?Q?B5r32SF0G3-oaxpyghZt-EPU-UuK5oheJQT6IjO?=
+ =?us-ascii?Q?AiRQaKwwuVDX1G86-B0NwHHJUjZ9UZpuyc07tJf?=
+ =?us-ascii?Q?2ituviw=5F4c81b4RGBJbldGLH-m-dSe8vjUzyoGb?=
+ =?us-ascii?Q?fHL8FOPGqkwXGD8KHijFhsgZ77HTpCjv5=5FfRBpu?=
+ =?us-ascii?Q?J1dFfz1oqz3tmGC4EYc9xx=5F6sIf84YJfD7BJtmW?=
+ =?us-ascii?Q?aPCQ1ZHQopy70waviy0NO21thgRJ9cqN-zLOnyL?=
+ =?us-ascii?Q?bJNZoZ9D86Orgb3OaX4IOvtnyFKhZZhNLByn2VY?=
+ =?us-ascii?Q?sUPIHeoUrV1xVYCyUzc8i7gVuhYprVH4sqXlvLH?=
+ =?us-ascii?Q?tkt4m6rIGWvevU1ekdy8lhJxiFiExc-ZX5487dH?=
+ =?us-ascii?Q?bq0O87sVRnll8KU3QTNLvroN8mh7Sz1SZtKNa7y?=
+ =?us-ascii?Q?pGZcLlxoWWGGoIZX6FfkjhWudh9-OrfDmq0ym2W?=
+ =?us-ascii?Q?Qd2zoGWMRce98YPsomCmQKbqpd6SXCOkulrBSGU?=
+ =?us-ascii?Q?UMGN0ZCG6aIv4gdWLBJh5d2lwFYSxZ8yjzybHA0?=
+ =?us-ascii?Q?PUdi0OtPrhIjjnx9c-=5F-cx49N4nn=5F6Ofl=5FYZx6r?=
+ =?us-ascii?Q?wbLiVNOhBA1cg4i4K4V8jWbAxGu0mjPuz3zDaAZ?=
+ =?us-ascii?Q?BZs0EvN30BU7lwSw6p5UuRELRkO40d4RIhUHJF-?=
+ =?us-ascii?Q?0kNGspcrQdWGgboiG5=5FBzXWz71qECKsUYVFI1Kg?=
+ =?us-ascii?Q?ImtQ9PmttW9PkFCVdvt4wsFU6RnDz9nBCJyEU1g?=
+ =?us-ascii?Q?jp7ROZKNPEcJ2BQalY-pyUO1ztV63BaPYlLa9SW?=
+ =?us-ascii?Q?Lkwz18B48XZ2C6TtxsDeEgxSVE=3D=3E?=
+
+--c2c3980d3cb7004cd5d07d3b17941cd1ecb15f97da265de5d6246e9cc609
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0
+
+Diffgram Text Annotation ( https://diffgram.com/main/ )
+
+Hi there!
+
+We invite you to join our Open Source Training Data ( https://github.com/di=
+ffgram/diffgram ) (AI/ML) community.
+
+Diffgram is Open Source and supports image, video, 3D, geospatial, text, au=
+dio annotation and more. Many integrations including MinIO, Huggingface, Ve=
+rtexAI, and Sagemaker.
+
+It's easy to upgrade from legacy installations with one click migration ( h=
+ttps://diffgram.readme.io/docs/1-click-migration-from-labelbox ).
+Unlimited usage, growing community, and Enterprise grade support.
+
+( https://github.com/diffgram/diffgram )
+
+Learn More ( https://github.com/diffgram/diffgram )
+
+Join our Slack Community ( https://join.slack.com/t/diffgram-workspace/shar=
+ed_invite/zt-twn6529v-hhSPzpQrAxvoZB95PhfAFg )
+
+Install Now ( https://diffgram.readme.io/docs/install ) or Try Diffgram Onl=
+ine ( https://diffgram.com/user/data_platform/new )
+
+About Diffgram: Training Data (Data Labeling, Annotation, Workflow) for all=
+ Data Types (Image, Video, 3D, Text, Geo, Audio, more) at scale.
+
+Diffgram is the Open Source alternative to Labelbox ( https://medium.com/di=
+ffgram/considering-labelbox-consider-diffgram-too-fe7a7b8ee8d7 ) , LabelStu=
+dio / Heartex ( https://diffgram.readme.io/docs/labelstudio-heartex ) , Sup=
+er Annotate ( https://diffgram.readme.io/docs/superannotate ) , V7 Labs Dar=
+win. ( https://diffgram.readme.io/docs/v7-labs-darwin )
+
+Diffgram Inc
+
+Santa Clara , Santa Clara , CA=20
+
+Unsubscribe ( https://u22220194.ct.sendgrid.net/asm/unsubscribe/?user_id=3D=
+22220194&data=3DWGSwB3c-JmMQWEn1ubU_UblJV1PA4WR8gvG_NzMuY0hoMDAwdTAwMJo6cKi=
+_ZhiLO4VoRL0ini34tGpMaSph0zFYQOseALCTb79lk1APduZLarrIvQ7xzUJJrWADAjgaCFKjjJ=
+W2HroLRdbuWt12L-Q8xt0Ph_-ITao-PsBR6fnkw3P5vUFrPFCQOYndo8Q5gCFxDSxQy_rYYPdc3=
+xhZddNri1bcrvleuGZ5E4_W2rh5RjQVWj7IiVlMHpnGzua7i-Cavu6vdMnKT0ETA1_PyaOPEnDG=
+AzttMEHx2kRmdDEwqVvLzokP6pKj4Mob5SUKDhLOp9ekg6MO_uBN3Rhjnzvlt7Fss22m4p_IBZ_=
+JhgeVDlzFn8grblsOyZ2T8k2cF_YrOIQayC_qNI_6_ccaSKlBlTEUcXtUhL84rHCzseALvhCLz7=
+vsggOzWE160Qyklq-Ln-VmOvnCSd5sJAAJl0MOuhq9REFck9oTdeG77iZSq_ZM1dZLQzlS4VVQx=
+-46FmRal4muRR6BJUez6uAE9MckQZf9D5mZ_SJ9CQgBxvDAwzLyyb6S1RD2kiPCvT4UnB0O2-8P=
+UQTCUKscnXlxblha28P8z1vDDJB-kCNmc9NmCWL16fn4D-72WEwAcC-uQmTeTMgYEyVH_QpnOv3=
+sU9yvwJ8oNpjvPlRnNDtqDgy6NlY1u3nkEoABllSJltsMGyYDNQ_99wptsTKDY3I_903a7mj3kN=
+8Oq-_Q7GmMSGJNdrugqCwkOiiR9GtjSzzCM25adIFhg2UHMnAK2oq5ZEyji3J30BKy7hP0M40dd=
+FKbJoMi4BABm95DfKuCJC5imTWJJjhVRhtcTwVXkPyMcoTFvc811j5vrR7o0DCC3uwt16PwxMMg=
+7ia7bM2Ge6GjemITRiQ8prCk9c6u5TUZ--zdiL9CpKEBCGQnAYl1cDg0gde_lonJJDBZkPw-BqX=
+QO6Vv_8p5pnlvxz0g1Dj72DKKRLLKV2Bt8l1TWCKoI0nH-yNZz4wEyJGkonZT-r1haupdAsw3oN=
+RWUVbSEvrlOldBTeZD2pTkwfBwnqpk6h0rQvb2Q3Egqz452W6bKV19bTb39wGXU_1t3whbMixGe=
+pH4gZpRNl0nFW4-ZLep6T52qL4H6eT6eiXtLkf0psPOG-uZOJmSlrMYJnBJszTfpjl5pLfSXTOd=
+5eFwJdiCoQ0yiUmvYjLyWqXYp-zHNfkm95kLSkXsm1k=3D ) - Unsubscribe Preferences =
+( https://u22220194.ct.sendgrid.net/asm/?user_id=3D22220194&data=3DNcZRxVbb=
+UxIz_an-5j4_xizo0CWebgqekUFPwgeJ_lxoMDAwdTAwMAV6fduszl8CnP_reG39H66DG6RkCS9=
+uZCjst2vrJVMDz6XdePXjbGr_q00NL6idrC-_SDEaIrbYmBLphNYjqk3gALJTLV_LHYagNYef-X=
+6iZkb_GcA2AsJ6gR08wC1m0JBDcEEzB8Oov5ro1cloUZ1FgAmac2z0GKU6WNcMqtlbmTFQ54Dwl=
+n3Wnqmtzrn-zpGe_HepGrmzFPlEox7m2bLo-nmm784hq3ag8ou5FqWI6va3S4ia_nheeNKIvKBy=
+DJik6Qra5oKVo_-yHvv_N9BLWLbV5GtEHXfVpmU643mBGGaay1iBTc89gHDWvTg5Duhy7KX1CpB=
+gwBMAlXBd3q4yAEsFuT7hdLUC8OymH941iYzpyNQn6LG7zVTNYE2xSAsz4hwO4Q-uW1RnokpNKL=
+8aTFk2-DTaKu9XBcfA2C4FkmaLda5rFxlfSkISah3eOexXgKOVITvQvth0fzJfRgN9l6JTvYAdK=
+EQui6gkotIpwT3Pvhh0TCFG5hT2SfZCZYhUOWZXyO-cRbbobg8WN6h-xeAuEAcU-scJzgttOt03=
+C8TIwZsU_nny6Qrercn-6XAwKAoTai7RXCgMv3Xk-orCpAswUh2MSlesXhgjVxP__0B-49Gv1ne=
+XOS8CmyTg89JBimnwYPAAlycgkiChtJhyw_psMcncqMaXLkdkhI68N7vIdruxxMi12UHUlAMyoz=
+MvO3AYXBBpXulzzimimteDDhjbvdKzyp_Ba-CPTTSsbGxSidmegmmfjSCh89kQqf7z9rbyTPZYq=
+tRz0bZ4hUN39b021CEftNK4JzFqde5LLqI1niavu9CXyD0zt_or2lCrz6o2aLlI4rtiP23vPZtV=
+3PebQuM5wpwFwgA87ZXBBxkxVqak7Vudo1nSKj_jF7DUax60IPeovcsoXUDnkJ24ZEMxMwkCyNK=
+7q2Y0K6FxZDcvQazpexPO9ZNHss_CooN6HMf9X8gRU4reNuVi1cX08GlBJg04xZ7M-8TPUphvMp=
+scRxW9pCP0TbYOkFjyHqJuXFlBr4cXA-B9V2kkgfyMXBjXsR8-3agkLcQmWnKTjrW1R3Dz3fnw1=
+MIdgrNd_NxnCWWa-0uL1Vs6_gaMkTFaiJ1waRnMpGDMt7vA-1WBKQYuwl2HocnqFhaxm4Kp0A=
+=3D=3D )
+--c2c3980d3cb7004cd5d07d3b17941cd1ecb15f97da265de5d6246e9cc609
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=us-ascii
+Mime-Version: 1.0
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org=
+/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html data-editor-version=3D"2" class=3D"sg-campaigns" xmlns=3D"http://www.=
+w3.org/1999/xhtml">
+    <head>
+      <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf=
+-8">
+      <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scal=
+e=3D1, minimum-scale=3D1, maximum-scale=3D1">
+      <!--[if !mso]><!-->
+      <meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3DEdge">
+      <!--<![endif]-->
+      <!--[if (gte mso 9)|(IE)]>
+      <xml>
+        <o:OfficeDocumentSettings>
+          <o:AllowPNG/>
+          <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+      </xml>
+      <![endif]-->
+      <!--[if (gte mso 9)|(IE)]>
+  <style type=3D"text/css">
+    body {width: 600px;margin: 0 auto;}
+    table {border-collapse: collapse;}
+    table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+    img {-ms-interpolation-mode: bicubic;}
+  </style>
+<![endif]-->
+      <style type=3D"text/css">
+    body, p, div {
+      font-family: arial,helvetica,sans-serif;
+      font-size: 14px;
+    }
+    body {
+      color: #000000;
+    }
+    body a {
+      color: #1188E6;
+      text-decoration: none;
+    }
+    p { margin: 0; padding: 0; }
+    table.wrapper {
+      width:100% !important;
+      table-layout: fixed;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+    img.max-width {
+      max-width: 100% !important;
+    }
+    .column.of-2 {
+      width: 50%;
+    }
+    .column.of-3 {
+      width: 33.333%;
+    }
+    .column.of-4 {
+      width: 25%;
+    }
+    ul ul ul ul  {
+      list-style-type: disc !important;
+    }
+    ol ol {
+      list-style-type: lower-roman !important;
+    }
+    ol ol ol {
+      list-style-type: lower-latin !important;
+    }
+    ol ol ol ol {
+      list-style-type: decimal !important;
+    }
+    @media screen and (max-width:480px) {
+      .preheader .rightColumnContent,
+      .footer .rightColumnContent {
+        text-align: left !important;
+      }
+      .preheader .rightColumnContent div,
+      .preheader .rightColumnContent span,
+      .footer .rightColumnContent div,
+      .footer .rightColumnContent span {
+        text-align: left !important;
+      }
+      .preheader .rightColumnContent,
+      .preheader .leftColumnContent {
+        font-size: 80% !important;
+        padding: 5px 0;
+      }
+      table.wrapper-mobile {
+        width: 100% !important;
+        table-layout: fixed;
+      }
+      img.max-width {
+        height: auto !important;
+        max-width: 100% !important;
+      }
+      a.bulletproof-button {
+        display: block !important;
+        width: auto !important;
+        font-size: 80%;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      .columns {
+        width: 100% !important;
+      }
+      .column {
+        display: block !important;
+        width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+      .social-icon-column {
+        display: inline-block !important;
+      }
+    }
+  </style>
+    <style>
+      @media screen and (max-width:480px) {
+        table\0 {
+          width: 480px !important;
+          }
+      }
+    </style>
+      <!--user entered Head Start--><!--End Head user entered-->
+    </head>
+    <body>
+      <center class=3D"wrapper" data-link-color=3D"#1188E6" data-body-style=
+=3D"font-size:14px; font-family:arial,helvetica,sans-serif; color:#000000; =
+background-color:#FFFFFF;">
+        <div class=3D"webkit">
+          <table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"=
+100%" class=3D"wrapper" bgcolor=3D"#FFFFFF">
+            <tr>
+              <td valign=3D"top" bgcolor=3D"#FFFFFF" width=3D"100%">
+                <table width=3D"100%" role=3D"content-container" class=3D"o=
+uter" align=3D"center" cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+                  <tr>
+                    <td width=3D"100%">
+                      <table width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0">
+                        <tr>
+                          <td>
+                            <!--[if mso]>
+    <center>
+    <table><tr><td width=3D"600">
+  <![endif]-->
+                                    <table width=3D"100%" cellpadding=3D"0"=
+ cellspacing=3D"0" border=3D"0" style=3D"width:100%; max-width:600px;" alig=
+n=3D"center">
+                                      <tr>
+                                        <td role=3D"modules-container" styl=
+e=3D"padding:0px 0px 0px 0px; color:#000000; text-align:left;" bgcolor=3D"#=
+FFFFFF" width=3D"100%" align=3D"left"><table class=3D"module preheader preh=
+eader-hide" role=3D"module" data-type=3D"preheader" border=3D"0" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"display: none !important;=
+ mso-hide: all; visibility: hidden; opacity: 0; color: transparent; height:=
+ 0; width: 0;">
+    <tr>
+      <td role=3D"module-content">
+        <p></p>
+      </td>
+    </tr>
+  </table><table class=3D"wrapper" role=3D"module" data-type=3D"image" bord=
+er=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"table-=
+layout: fixed;" data-muid=3D"79ee332d-9475-42dd-be15-9409154d73bd">
+    <tbody>
+      <tr>
+        <td style=3D"font-size:6px; line-height:10px; padding:0px 0px 0px 0=
+px;" valign=3D"top" align=3D"center">
+         =20
+        <a href=3D"https://u22220194.ct.sendgrid.net/ls/click?upn=3D3IlewKR=
+ktVTqhFutlRN2vBesh8FtjuUjSVbcqIjj5GQkxaXsOZRI0VKO-2FsLRluB-2FrSID_INgc0CXRk=
+IvGU-2BJ1W6HLAwQ7OhM-2F8PJqxC1iQmIcswswF-2BFaQrOV9ylCr0lxWVnu7NqUeasiq8NYwD=
+tt3BBQeZN3pIoJD5-2F3XZzHjrDcckEimQpVraFw9GlWMH4jK7oKDTk5BkYsj28yicRIfPj7N8d=
+Uuth4LkBXqNkBOhp6c9RlNbAIs4NPTgh9x7hZ74KpWmDqRdjgWi1OPy0wAe0SMpSSILiVeM9Tgs=
+mIj6gLRUFY6C0jRlfsv4Ft6YHMXP6OTOdv1-2BszLP62W7oh7ikD3erSoZfQHtInlmbkTfsBSwP=
+sjIKvCdt1bQHy0QP1B1XbxsDVL7HdOwZB9VtrxbbCV8gi8Oic-2FBFb-2BWdXjllAejQO7APwmM=
+-2BqJsxfMQh6a1c1MT-2FN8mqBlwlHG0DF4SQpaMNZ4wh-2FQoeGlq-2FvG-2BphGW8SPMBIJzU=
+r4xFxwQp94Ts5Ny9AGE-2FKlGZpP7aq3SHx9lC4cMoRPLByiwgmWZAAYLTItdhxeLoxUgRBn1yz=
+XYIPkayMzzDzw43Cpz3-2BP-2FqqMi2Ks0lAKck-2BGeoCsTgfFoF7RQ4qd12n-2BEo1-2Fc6Vg=
+iwR1OQKQ2syzB-2BEVoBcXJOdgF28d-2BXKC3FHgNbaj-2Bc-2Bfpe3-2FYbiMocnSE0e6E0BNQ=
+Iq-2FzfQWQc678zYuGZkWTwU0WihbYaFljMwjLpOHiZ2yHnGZFol5PDAIHFglIBtB6pegP7bAVL=
+wmJwde-2BLk7je1XUARWD-2F5L-2FefQrGnq9M8CTLOpwAY5z5jB0K-2FxhGRENMuybpT-2FhaO=
+vhf47Of022hnpdGc07R-2FrPX9iem84mwmWzOaHw16-2BOC3eKlgLAfqtsAN4PAs3ZKlDsgnoZP=
+xtQVdglW2EnRCQ-2F3JRIWYlKeOOD83KY7C1sK41ZTtB8fJ-2FOiyTnl9qWeivHgFMppia0BoSh=
+9h0i0f56iAlN44u-2FB6NvUXBGMYWFe1IgvjoZ6N5-2Fyx-2FR92aIAWL-2FrR7i3ClDDshRBGz=
+-2Bj-2FYwcXBaFmlYV7NSFOq79ZXS5HlPYC4QWkE2E2"><img class=3D"max-width" borde=
+r=3D"0" style=3D"display:block; color:#000000; text-decoration:none; font-f=
+amily:Helvetica, arial, sans-serif; font-size:16px; max-width:50% !importan=
+t; width:50%; height:auto !important;" width=3D"300" alt=3D"Diffgram Text A=
+nnotation" data-proportionally-constrained=3D"true" data-responsive=3D"true=
+" src=3D"http://cdn.mcauto-images-production.sendgrid.net/af131d949b78b171/=
+f575494f-6d94-44fe-bf0e-7c0987f50441/1181x418.png"></a></td>
+      </tr>
+    </tbody>
+  </table><table class=3D"module" role=3D"module" data-type=3D"text" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"table-la=
+yout: fixed;" data-muid=3D"c74cc1ed-4024-4b54-b83d-571c93069f81" data-mc-mo=
+dule-version=3D"2019-10-22">
+    <tbody>
+      <tr>
+        <td style=3D"padding:18px 0px 18px 0px; line-height:22px; text-alig=
+n:inherit;" height=3D"100%" valign=3D"top" bgcolor=3D"" role=3D"module-cont=
+ent"><div><div style=3D"font-family: inherit; text-align: inherit"><span st=
+yle=3D"line-height: 1.38; margin-top: 0pt; margin-bottom: 0pt; font-size: 1=
+1pt; font-family: Arial; color: #000000; background-color: transparent; fon=
+t-weight: 400; font-style: normal; font-variant-ligatures: normal; font-var=
+iant-caps: normal; font-variant-numeric: normal; font-variant-east-asian: n=
+ormal; text-decoration-line: none; text-decoration-thickness: initial; text=
+-decoration-style: initial; text-decoration-color: initial; vertical-align:=
+ baseline; white-space: pre-wrap">Hi there!</span></div>
+<div style=3D"font-family: inherit; text-align: inherit"><br></div>
+<div style=3D"font-family: inherit; text-align: inherit"><span style=3D"fon=
+t-size: 14px">We invite you to join our </span><a href=3D"https://u22220194=
+.ct.sendgrid.net/ls/click?upn=3D3IlewKRktVTqhFutlRN2vP7nQFmY-2BbGTD-2FZVtri=
+shwXIIZuDAG9QOUNWOJ7dDE4gyvSa_INgc0CXRkIvGU-2BJ1W6HLAwQ7OhM-2F8PJqxC1iQmIcs=
+wswF-2BFaQrOV9ylCr0lxWVnu7NqUeasiq8NYwDtt3BBQeZN3pIoJD5-2F3XZzHjrDcckEimQpV=
+raFw9GlWMH4jK7oKDTk5BkYsj28yicRIfPj7N8dUuth4LkBXqNkBOhp6c9RlNbAIs4NPTgh9x7h=
+Z74KpWmDqRdjgWi1OPy0wAe0SMpSSILiVeM9TgsmIj6gLRUFY6C0jRlfsv4Ft6YHMXP6OTOdv1-=
+2BszLP62W7oh7ikD3erSoZfQHtInlmbkTfsBSwPsjIKvCdt1bQHy0QP1B1XbxsDVL7HdOwZB9Vt=
+rxbbCV8gi8Oic-2FBFb-2BWdXjllAejQO7APwmM-2BqJsxfMQh6a1c1MT-2FN8mqBlwlHG0DF4S=
+QpaMNZ4wh-2FQoeGlq-2FvG-2BphGW8SPMBIJzUr4xFxwQp94Ts5Ny9AGE-2FKlGZpP7aq3SHx9=
+lC4cMoRPLByiwgmWZAAYLTItdhxeLoxUgRBn1yzXYIPkayMzzDzw43Cpz3-2BP-2FqqMi2Ks0lA=
+Kck-2BGeoCsTgfFoF7RQ4qd12n-2BEo1-2Fc6VgiwR1OQKQ2syzB-2BEVoBcXJOdgF28d-2BXKC=
+3FHgNbaj-2Bc-2Bfpe3-2FYbiMocnSE0e6E0BNQIq-2FzfQWQc678zYuGZkWTwU0WihbYaFljMw=
+jLpOHiZ2yHnGZFol5PDAIHFglIBtB6pegP7bAVLwmJwde-2BLk7je1XUARWD-2F5L-2FefQrGnq=
+9M8CTLOpwAY5z5jB0K-2FxhGRENMuybpT-2FhaOvhf47Of022hnpdGc07R-2FrPX9iem84mwmWz=
+OaHw16-2BOC3eKlgLAfqtsAN4PAs3ZKlDsgnoZPxtQVdgpeQo93N0iwyPtlXmX0QbQzAg869LDy=
+U2I6dsXW8lLbzX8e5BnFVFhuI9D1nUTQexkc5VbFpuqIEKI2XcO2hoEVgX8ZvsGrKBSKYuvNduF=
+9-2BnN5sYLJK7Lg4-2BpuXwRXsRZ-2FNKkyuT7l2gHvN5MkboiXBZCrYXKmjtEz9Pflq7AA0"><=
+span style=3D"font-size: 14px">Open Source Training Data</span></a><span st=
+yle=3D"font-size: 14px"> (AI/ML) community.</span></div>
+<div style=3D"font-family: inherit; text-align: inherit"><br></div>
+<div style=3D"font-family: inherit; text-align: inherit"><span style=3D"fon=
+t-size: 14px">Diffgram is Open Source and supports image, video, 3D, geospa=
+tial, text, audio annotation and more. Many integrations including MinIO, H=
+uggingface, VertexAI, and Sagemaker.</span></div>
+<div style=3D"font-family: inherit; text-align: inherit"><br></div>
+<div style=3D"font-family: inherit; text-align: inherit"><span style=3D"fon=
+t-size: 14px">It's easy to upgrade from legacy installations with </span><a=
+ href=3D"https://u22220194.ct.sendgrid.net/ls/click?upn=3D3IlewKRktVTqhFutl=
+RN2vLl8oxCZaqSgYScXDhCQEkx7d2q0n3ToOL7hZcMaqpmzFeu-2B9R4V98vSlIJdcSOZd-2BPk=
+6BCQ1WiSRGg-2FXy0nA-2Fo-3DdwhE_INgc0CXRkIvGU-2BJ1W6HLAwQ7OhM-2F8PJqxC1iQmIc=
+swswF-2BFaQrOV9ylCr0lxWVnu7NqUeasiq8NYwDtt3BBQeZN3pIoJD5-2F3XZzHjrDcckEimQp=
+VraFw9GlWMH4jK7oKDTk5BkYsj28yicRIfPj7N8dUuth4LkBXqNkBOhp6c9RlNbAIs4NPTgh9x7=
+hZ74KpWmDqRdjgWi1OPy0wAe0SMpSSILiVeM9TgsmIj6gLRUFY6C0jRlfsv4Ft6YHMXP6OTOdv1=
+-2BszLP62W7oh7ikD3erSoZfQHtInlmbkTfsBSwPsjIKvCdt1bQHy0QP1B1XbxsDVL7HdOwZB9V=
+trxbbCV8gi8Oic-2FBFb-2BWdXjllAejQO7APwmM-2BqJsxfMQh6a1c1MT-2FN8mqBlwlHG0DF4=
+SQpaMNZ4wh-2FQoeGlq-2FvG-2BphGW8SPMBIJzUr4xFxwQp94Ts5Ny9AGE-2FKlGZpP7aq3SHx=
+9lC4cMoRPLByiwgmWZAAYLTItdhxeLoxUgRBn1yzXYIPkayMzzDzw43Cpz3-2BP-2FqqMi2Ks0l=
+AKck-2BGeoCsTgfFoF7RQ4qd12n-2BEo1-2Fc6VgiwR1OQKQ2syzB-2BEVoBcXJOdgF28d-2BXK=
+C3FHgNbaj-2Bc-2Bfpe3-2FYbiMocnSE0e6E0BNQIq-2FzfQWQc678zYuGZkWTwU0WihbYaFljM=
+wjLpOHiZ2yHnGZFol5PDAIHFglIBtB6pegP7bAVLwmJwde-2BLk7je1XUARWD-2F5L-2FefQrGn=
+q9M8CTLOpwAY5z5jB0K-2FxhGRENMuybpT-2FhaOvhf47Of022hnpdGc07R-2FrPX9iem84mwmW=
+zOaHw16-2BOC3eKlgLAfqtsAN4PAs3ZKlDsgnoZPxtQVdghbqUw7cC8xgSBEFQGsNZ5VpCeHOcc=
+1OTHZJ0zzpSl1TF2BGeAJZrg8OpwPPmejziBhkLLgWcFykpSwaS8QIyBq0xRlInvJ718vBnESRS=
+Plq-2Fx0EGGkBiE3hi6gysB-2BHvFPBw-2B0NQq9LuBRuq-2FGa0OEqNxmobhpEXbko0Fj4ZXlK=
+"><span style=3D"font-size: 14px">one click migration</span></a><span style=
+=3D"font-size: 14px">.&nbsp;</span></div>
+<div style=3D"font-family: inherit; text-align: inherit"><span style=3D"fon=
+t-size: 14px">Unlimited usage, growing community, and Enterprise grade supp=
+ort.</span></div><div></div></div></td>
+      </tr>
+    </tbody>
+  </table><table class=3D"wrapper" role=3D"module" data-type=3D"image" bord=
+er=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"table-=
+layout: fixed;" data-muid=3D"7d6e89eb-ed26-439f-90ee-8f09adc094dd">
+    <tbody>
+      <tr>
+        <td style=3D"font-size:6px; line-height:10px; padding:0px 0px 0px 0=
+px;" valign=3D"top" align=3D"center">
+         =20
+        <a href=3D"https://u22220194.ct.sendgrid.net/ls/click?upn=3D3IlewKR=
+ktVTqhFutlRN2vP7nQFmY-2BbGTD-2FZVtrishwXIIZuDAG9QOUNWOJ7dDE4gWqTU_INgc0CXRk=
+IvGU-2BJ1W6HLAwQ7OhM-2F8PJqxC1iQmIcswswF-2BFaQrOV9ylCr0lxWVnu7NqUeasiq8NYwD=
+tt3BBQeZN3pIoJD5-2F3XZzHjrDcckEimQpVraFw9GlWMH4jK7oKDTk5BkYsj28yicRIfPj7N8d=
+Uuth4LkBXqNkBOhp6c9RlNbAIs4NPTgh9x7hZ74KpWmDqRdjgWi1OPy0wAe0SMpSSILiVeM9Tgs=
+mIj6gLRUFY6C0jRlfsv4Ft6YHMXP6OTOdv1-2BszLP62W7oh7ikD3erSoZfQHtInlmbkTfsBSwP=
+sjIKvCdt1bQHy0QP1B1XbxsDVL7HdOwZB9VtrxbbCV8gi8Oic-2FBFb-2BWdXjllAejQO7APwmM=
+-2BqJsxfMQh6a1c1MT-2FN8mqBlwlHG0DF4SQpaMNZ4wh-2FQoeGlq-2FvG-2BphGW8SPMBIJzU=
+r4xFxwQp94Ts5Ny9AGE-2FKlGZpP7aq3SHx9lC4cMoRPLByiwgmWZAAYLTItdhxeLoxUgRBn1yz=
+XYIPkayMzzDzw43Cpz3-2BP-2FqqMi2Ks0lAKck-2BGeoCsTgfFoF7RQ4qd12n-2BEo1-2Fc6Vg=
+iwR1OQKQ2syzB-2BEVoBcXJOdgF28d-2BXKC3FHgNbaj-2Bc-2Bfpe3-2FYbiMocnSE0e6E0BNQ=
+Iq-2FzfQWQc678zYuGZkWTwU0WihbYaFljMwjLpOHiZ2yHnGZFol5PDAIHFglIBtB6pegP7bAVL=
+wmJwde-2BLk7je1XUARWD-2F5L-2FefQrGnq9M8CTLOpwAY5z5jB0K-2FxhGRENMuybpT-2FhaO=
+vhf47Of022hnpdGc07R-2FrPX9iem84mwmWzOaHw16-2BOC3eKlgLAfqtsAN4PAs3ZKlDsgnoZP=
+xtQVdgiDqiIp-2FKpSnv0yAF266rImY06KwxKinHQmBOdwS8zPnC57AD8kUKVdSWHbcjIsSoppz=
+R-2B4-2BPjofftBLwBmnJ2fJbNuRSclOtpZ9k5aZAeOQ25pj28YODmBjKHjdsLUldLCd0-2BTnx=
+hr6GCv8Jb8MyfGFTu2pBh-2BuCIa7bTNhi4p7"><img class=3D"max-width" border=3D"0=
+" style=3D"display:block; color:#000000; text-decoration:none; font-family:=
+Helvetica, arial, sans-serif; font-size:16px; max-width:100% !important; wi=
+dth:100%; height:auto !important;" width=3D"600" alt=3D"" data-proportional=
+ly-constrained=3D"true" data-responsive=3D"true" src=3D"http://cdn.mcauto-i=
+mages-production.sendgrid.net/af131d949b78b171/913b7df3-7221-4903-a276-5e58=
+3d0fac18/999x111.PNG"></a></td>
+      </tr>
+    </tbody>
+  </table><table class=3D"module" role=3D"module" data-type=3D"spacer" bord=
+er=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"table-=
+layout: fixed;" data-muid=3D"5f3bce5f-c227-4526-986b-d0da389ef63a">
+    <tbody>
+      <tr>
+        <td style=3D"padding:0px 0px 30px 0px;" role=3D"module-content" bgc=
+olor=3D"">
+        </td>
+      </tr>
+    </tbody>
+  </table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"=
+module" data-role=3D"module-button" data-type=3D"button" role=3D"module" st=
+yle=3D"table-layout:fixed;" width=3D"100%" data-muid=3D"a9f0dc5d-74a2-415a-=
+a264-c4e754c28038">
+      <tbody>
+        <tr>
+          <td align=3D"center" bgcolor=3D"" class=3D"outer-td" style=3D"pad=
+ding:0px 0px 0px 0px;">
+            <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=
+=3D"wrapper-mobile" style=3D"text-align:center;">
+              <tbody>
+                <tr>
+                <td align=3D"center" bgcolor=3D"#333333" class=3D"inner-td"=
+ style=3D"border-radius:6px; font-size:16px; text-align:center; background-=
+color:inherit;">
+                  <a href=3D"https://u22220194.ct.sendgrid.net/ls/click?upn=
+=3D3IlewKRktVTqhFutlRN2vP7nQFmY-2BbGTD-2FZVtrishwXIIZuDAG9QOUNWOJ7dDE4g1Mse=
+_INgc0CXRkIvGU-2BJ1W6HLAwQ7OhM-2F8PJqxC1iQmIcswswF-2BFaQrOV9ylCr0lxWVnu7NqU=
+easiq8NYwDtt3BBQeZN3pIoJD5-2F3XZzHjrDcckEimQpVraFw9GlWMH4jK7oKDTk5BkYsj28yi=
+cRIfPj7N8dUuth4LkBXqNkBOhp6c9RlNbAIs4NPTgh9x7hZ74KpWmDqRdjgWi1OPy0wAe0SMpSS=
+ILiVeM9TgsmIj6gLRUFY6C0jRlfsv4Ft6YHMXP6OTOdv1-2BszLP62W7oh7ikD3erSoZfQHtInl=
+mbkTfsBSwPsjIKvCdt1bQHy0QP1B1XbxsDVL7HdOwZB9VtrxbbCV8gi8Oic-2FBFb-2BWdXjllA=
+ejQO7APwmM-2BqJsxfMQh6a1c1MT-2FN8mqBlwlHG0DF4SQpaMNZ4wh-2FQoeGlq-2FvG-2BphG=
+W8SPMBIJzUr4xFxwQp94Ts5Ny9AGE-2FKlGZpP7aq3SHx9lC4cMoRPLByiwgmWZAAYLTItdhxeL=
+oxUgRBn1yzXYIPkayMzzDzw43Cpz3-2BP-2FqqMi2Ks0lAKck-2BGeoCsTgfFoF7RQ4qd12n-2B=
+Eo1-2Fc6VgiwR1OQKQ2syzB-2BEVoBcXJOdgF28d-2BXKC3FHgNbaj-2Bc-2Bfpe3-2FYbiMocn=
+SE0e6E0BNQIq-2FzfQWQc678zYuGZkWTwU0WihbYaFljMwjLpOHiZ2yHnGZFol5PDAIHFglIBtB=
+6pegP7bAVLwmJwde-2BLk7je1XUARWD-2F5L-2FefQrGnq9M8CTLOpwAY5z5jB0K-2FxhGRENMu=
+ybpT-2FhaOvhf47Of022hnpdGc07R-2FrPX9iem84mwmWzOaHw16-2BOC3eKlgLAfqtsAN4PAs3=
+ZKlDsgnoZPxtQVdgrDb6xKF3UbW9mCEn-2Fr9HGgSUxXot1pxRE9K-2B0jxff3kyel-2BUbi4Py=
+4liBx5n-2BKeS8Rrq0eRJTGRUgAlZWJJhGX4zCSa-2Fg9eUuPleSaDjNXNM5bJ9mjyekWPvj-2B=
+4HiNMBLH8N0EopT5YQWXPGIKLJkW2M5OOzJ7qDxgw6pcJriZO" style=3D"background-colo=
+r:#333333; border:1px solid #333333; border-color:#333333; border-radius:6p=
+x; border-width:1px; color:#ffffff; display:inline-block; font-size:14px; f=
+ont-weight:normal; letter-spacing:0px; line-height:normal; padding:12px 18p=
+x 12px 18px; text-align:center; text-decoration:none; border-style:solid;" =
+target=3D"_blank">Learn More</a>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table><table class=3D"module" role=3D"module" data-type=3D"spacer" bo=
+rder=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"tabl=
+e-layout: fixed;" data-muid=3D"724b1971-0688-43b8-b623-545c8a6ae3fa">
+    <tbody>
+      <tr>
+        <td style=3D"padding:0px 0px 30px 0px;" role=3D"module-content" bgc=
+olor=3D"">
+        </td>
+      </tr>
+    </tbody>
+  </table><table class=3D"module" role=3D"module" data-type=3D"divider" bor=
+der=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"table=
+-layout: fixed;" data-muid=3D"26ced7d3-a334-428c-b912-f1beaec0f3e7">
+    <tbody>
+      <tr>
+        <td style=3D"padding:0px 0px 0px 0px;" role=3D"module-content" heig=
+ht=3D"100%" valign=3D"top" bgcolor=3D"">
+          <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" align=3D"=
+center" width=3D"100%" height=3D"2px" style=3D"line-height:2px; font-size:2=
+px;">
+            <tbody>
+              <tr>
+                <td style=3D"padding:0px 0px 2px 0px;" bgcolor=3D"#000000">=
+</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table><table class=3D"module" role=3D"module" data-type=3D"text" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"table-la=
+yout: fixed;" data-muid=3D"e0ee1ad7-3d8b-4805-a964-724b029607e8" data-mc-mo=
+dule-version=3D"2019-10-22">
+    <tbody>
+      <tr>
+        <td style=3D"padding:18px 0px 18px 0px; line-height:22px; text-alig=
+n:inherit; background-color:#FFFFFF;" height=3D"100%" valign=3D"top" bgcolo=
+r=3D"#FFFFFF" role=3D"module-content"><div><div style=3D"font-family: inher=
+it; text-align: start"><a href=3D"https://u22220194.ct.sendgrid.net/ls/clic=
+k?upn=3D3IlewKRktVTqhFutlRN2vARNZcBdSt0dMRGJYqO30At-2F2LEoiw7lWZfzMIciKClLr=
+iQ38WnfRjgtu-2F4KID99Mbs4Wi4hprgD0wCtZCiXaHqgeiHtXwyo4vbBBJB6Higu-2F5Zq74Sb=
+v-2F9V4qz-2B-2FENerA-3D-3DFhVg_INgc0CXRkIvGU-2BJ1W6HLAwQ7OhM-2F8PJqxC1iQmIc=
+swswF-2BFaQrOV9ylCr0lxWVnu7NqUeasiq8NYwDtt3BBQeZN3pIoJD5-2F3XZzHjrDcckEimQp=
+VraFw9GlWMH4jK7oKDTk5BkYsj28yicRIfPj7N8dUuth4LkBXqNkBOhp6c9RlNbAIs4NPTgh9x7=
+hZ74KpWmDqRdjgWi1OPy0wAe0SMpSSILiVeM9TgsmIj6gLRUFY6C0jRlfsv4Ft6YHMXP6OTOdv1=
+-2BszLP62W7oh7ikD3erSoZfQHtInlmbkTfsBSwPsjIKvCdt1bQHy0QP1B1XbxsDVL7HdOwZB9V=
+trxbbCV8gi8Oic-2FBFb-2BWdXjllAejQO7APwmM-2BqJsxfMQh6a1c1MT-2FN8mqBlwlHG0DF4=
+SQpaMNZ4wh-2FQoeGlq-2FvG-2BphGW8SPMBIJzUr4xFxwQp94Ts5Ny9AGE-2FKlGZpP7aq3SHx=
+9lC4cMoRPLByiwgmWZAAYLTItdhxeLoxUgRBn1yzXYIPkayMzzDzw43Cpz3-2BP-2FqqMi2Ks0l=
+AKck-2BGeoCsTgfFoF7RQ4qd12n-2BEo1-2Fc6VgiwR1OQKQ2syzB-2BEVoBcXJOdgF28d-2BXK=
+C3FHgNbaj-2Bc-2Bfpe3-2FYbiMocnSE0e6E0BNQIq-2FzfQWQc678zYuGZkWTwU0WihbYaFljM=
+wjLpOHiZ2yHnGZFol5PDAIHFglIBtB6pegP7bAVLwmJwde-2BLk7je1XUARWD-2F5L-2FefQrGn=
+q9M8CTLOpwAY5z5jB0K-2FxhGRENMuybpT-2FhaOvhf47Of022hnpdGc07R-2FrPX9iem84mwmW=
+zOaHw16-2BOC3eKlgLAfqtsAN4PAs3ZKlDsgnoZPxtQVdgooaOFZYbXy9LJTVgzd1Vjxm45ryIx=
+oQzbndPcR34wkvalQfkr7YcAIjKw1ghsOqveuQ5LjYH6Y7zbduazBeOh11-2FlRE0KQmNdAHtqz=
+YyA4Tx6x9kPe-2FmIlApSW3yq1hUk06hKuPS3DUBwnZV5I7lZiP52myGCTqC2Y8MeZWhjWw"><s=
+pan style=3D"box-sizing: border-box; padding-top: 0px; padding-right: 0px; =
+padding-bottom: 0px; padding-left: 0px; margin-top: 0pt; margin-right: 0px;=
+ margin-bottom: 0pt; margin-left: 0px; font-style: inherit; font-variant-li=
+gatures: inherit; font-variant-caps: inherit; font-variant-numeric: normal;=
+ font-variant-east-asian: normal; font-weight: inherit; font-stretch: inher=
+it; line-height: 1.38; font-family: Arial; font-size: 14.6667px; vertical-a=
+lign: baseline; border-top-width: 0px; border-right-width: 0px; border-bott=
+om-width: 0px; border-left-width: 0px; border-top-style: initial; border-ri=
+ght-style: initial; border-bottom-style: initial; border-left-style: initia=
+l; border-top-color: initial; border-right-color: initial; border-bottom-co=
+lor: initial; border-left-color: initial; border-image-source: initial; bor=
+der-image-slice: initial; border-image-width: initial; border-image-outset:=
+ initial; border-image-repeat: initial; letter-spacing: normal; orphans: 2;=
+ text-align: start; text-indent: 0px; text-transform: none; white-space: pr=
+e-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; backg=
+round-color: transparent; text-decoration-thickness: initial; text-decorati=
+on-style: initial; text-decoration-color: initial; text-decoration-line: un=
+derline; text-decoration-skip-ink: none">Join our Slack Community</span></a=
+></div>
+<div style=3D"font-family: inherit; text-align: start"><br></div>
+<div style=3D"font-family: inherit; text-align: inherit"><a href=3D"https:/=
+/u22220194.ct.sendgrid.net/ls/click?upn=3D3IlewKRktVTqhFutlRN2vLl8oxCZaqSgY=
+ScXDhCQEkyJsPPAoNDLpjFf6qtiYKHu9El3dy9meUuqA22A3elpHg-3D-3DbDmF_INgc0CXRkIv=
+GU-2BJ1W6HLAwQ7OhM-2F8PJqxC1iQmIcswswF-2BFaQrOV9ylCr0lxWVnu7NqUeasiq8NYwDtt=
+3BBQeZN3pIoJD5-2F3XZzHjrDcckEimQpVraFw9GlWMH4jK7oKDTk5BkYsj28yicRIfPj7N8dUu=
+th4LkBXqNkBOhp6c9RlNbAIs4NPTgh9x7hZ74KpWmDqRdjgWi1OPy0wAe0SMpSSILiVeM9TgsmI=
+j6gLRUFY6C0jRlfsv4Ft6YHMXP6OTOdv1-2BszLP62W7oh7ikD3erSoZfQHtInlmbkTfsBSwPsj=
+IKvCdt1bQHy0QP1B1XbxsDVL7HdOwZB9VtrxbbCV8gi8Oic-2FBFb-2BWdXjllAejQO7APwmM-2=
+BqJsxfMQh6a1c1MT-2FN8mqBlwlHG0DF4SQpaMNZ4wh-2FQoeGlq-2FvG-2BphGW8SPMBIJzUr4=
+xFxwQp94Ts5Ny9AGE-2FKlGZpP7aq3SHx9lC4cMoRPLByiwgmWZAAYLTItdhxeLoxUgRBn1yzXY=
+IPkayMzzDzw43Cpz3-2BP-2FqqMi2Ks0lAKck-2BGeoCsTgfFoF7RQ4qd12n-2BEo1-2Fc6Vgiw=
+R1OQKQ2syzB-2BEVoBcXJOdgF28d-2BXKC3FHgNbaj-2Bc-2Bfpe3-2FYbiMocnSE0e6E0BNQIq=
+-2FzfQWQc678zYuGZkWTwU0WihbYaFljMwjLpOHiZ2yHnGZFol5PDAIHFglIBtB6pegP7bAVLwm=
+Jwde-2BLk7je1XUARWD-2F5L-2FefQrGnq9M8CTLOpwAY5z5jB0K-2FxhGRENMuybpT-2FhaOvh=
+f47Of022hnpdGc07R-2FrPX9iem84mwmWzOaHw16-2BOC3eKlgLAfqtsAN4PAs3ZKlDsgnoZPxt=
+QVdgrFHR-2BjbLoQlyRRF-2FMgPza34p46JWPPC79w8rwGiPpm-2BylOghFoNbqd-2F4zjy-2Br=
+kEjVEe7LdajqBtmHQHQrdEagsUkvdZ5RuZ5rnDsEIs2SKzeYCweLJ9yDEpspFWM3yjBUW-2F1CV=
+CqmIODT-2B-2BHYfQpDOMYqrb6625cMNdaEIUu4Ui"><span style=3D"box-sizing: borde=
+r-box; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-l=
+eft: 0px; margin-top: 0pt; margin-right: 0px; margin-bottom: 0pt; margin-le=
+ft: 0px; font-style: inherit; font-variant-ligatures: inherit; font-variant=
+-caps: inherit; font-variant-numeric: normal; font-variant-east-asian: norm=
+al; font-weight: inherit; font-stretch: inherit; line-height: 1.38; font-fa=
+mily: Arial; font-size: 14.6667px; vertical-align: baseline; border-top-wid=
+th: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-wid=
+th: 0px; border-top-style: initial; border-right-style: initial; border-bot=
+tom-style: initial; border-left-style: initial; border-top-color: initial; =
+border-right-color: initial; border-bottom-color: initial; border-left-colo=
+r: initial; border-image-source: initial; border-image-slice: initial; bord=
+er-image-width: initial; border-image-outset: initial; border-image-repeat:=
+ initial; letter-spacing: normal; orphans: 2; text-align: start; text-inden=
+t: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacin=
+g: 0px; -webkit-text-stroke-width: 0px; background-color: transparent; text=
+-decoration-thickness: initial; text-decoration-style: initial; text-decora=
+tion-color: initial; text-decoration-line: underline; text-decoration-skip-=
+ink: none">Install Now</span></a> or <a href=3D"https://u22220194.ct.sendgr=
+id.net/ls/click?upn=3D3IlewKRktVTqhFutlRN2vME-2B78SkZB-2BmvtUdTRv60Cvt47p2U=
+9wxzrPLlQCoauYuIulLkhhdE3QdaBR2Fr-2FxcA-3D-3DF63V_INgc0CXRkIvGU-2BJ1W6HLAwQ=
+7OhM-2F8PJqxC1iQmIcswswF-2BFaQrOV9ylCr0lxWVnu7NqUeasiq8NYwDtt3BBQeZN3pIoJD5=
+-2F3XZzHjrDcckEimQpVraFw9GlWMH4jK7oKDTk5BkYsj28yicRIfPj7N8dUuth4LkBXqNkBOhp=
+6c9RlNbAIs4NPTgh9x7hZ74KpWmDqRdjgWi1OPy0wAe0SMpSSILiVeM9TgsmIj6gLRUFY6C0jRl=
+fsv4Ft6YHMXP6OTOdv1-2BszLP62W7oh7ikD3erSoZfQHtInlmbkTfsBSwPsjIKvCdt1bQHy0QP=
+1B1XbxsDVL7HdOwZB9VtrxbbCV8gi8Oic-2FBFb-2BWdXjllAejQO7APwmM-2BqJsxfMQh6a1c1=
+MT-2FN8mqBlwlHG0DF4SQpaMNZ4wh-2FQoeGlq-2FvG-2BphGW8SPMBIJzUr4xFxwQp94Ts5Ny9=
+AGE-2FKlGZpP7aq3SHx9lC4cMoRPLByiwgmWZAAYLTItdhxeLoxUgRBn1yzXYIPkayMzzDzw43C=
+pz3-2BP-2FqqMi2Ks0lAKck-2BGeoCsTgfFoF7RQ4qd12n-2BEo1-2Fc6VgiwR1OQKQ2syzB-2B=
+EVoBcXJOdgF28d-2BXKC3FHgNbaj-2Bc-2Bfpe3-2FYbiMocnSE0e6E0BNQIq-2FzfQWQc678zY=
+uGZkWTwU0WihbYaFljMwjLpOHiZ2yHnGZFol5PDAIHFglIBtB6pegP7bAVLwmJwde-2BLk7je1X=
+UARWD-2F5L-2FefQrGnq9M8CTLOpwAY5z5jB0K-2FxhGRENMuybpT-2FhaOvhf47Of022hnpdGc=
+07R-2FrPX9iem84mwmWzOaHw16-2BOC3eKlgLAfqtsAN4PAs3ZKlDsgnoZPxtQVdgi99ITvzVi8=
+4VyXy5NwlEX1xPlnqkjwaPdgqj0A7U3fLILVXbqtijKa4-2B829-2BSGjbcAYC-2BiF-2B1sl3g=
+AWUj1-2BxMyVq0hW9xa32i4Yqpn6f9zj8-2FgfJ6Cm3wCqHp3Ino-2B4gRu82VoPawrRvQgZRE3=
+YQ9QYcm1TBZGdRuHrkQHlF1Pp"><span style=3D"box-sizing: border-box; padding-t=
+op: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin=
+-top: 0pt; margin-right: 0px; margin-bottom: 0pt; margin-left: 0px; font-st=
+yle: inherit; font-variant-ligatures: inherit; font-variant-caps: inherit; =
+font-variant-numeric: normal; font-variant-east-asian: normal; font-weight:=
+ inherit; font-stretch: inherit; line-height: 1.38; font-family: inherit; f=
+ont-size: 14.6667px; vertical-align: baseline; border-top-width: 0px; borde=
+r-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; borde=
+r-top-style: initial; border-right-style: initial; border-bottom-style: ini=
+tial; border-left-style: initial; border-top-color: initial; border-right-c=
+olor: initial; border-bottom-color: initial; border-left-color: initial; bo=
+rder-image-source: initial; border-image-slice: initial; border-image-width=
+: initial; border-image-outset: initial; border-image-repeat: initial; outl=
+ine-color: initial; outline-style: none; outline-width: initial; text-decor=
+ation-line: underline; text-decoration-thickness: initial; text-decoration-=
+style: initial; text-decoration-color: initial; transition-duration: 0.3s; =
+transition-timing-function: ease; transition-delay: 0s; transition-property=
+: color; letter-spacing: normal; orphans: 2; text-align: start; text-indent=
+: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing=
+: 0px; -webkit-text-stroke-width: 0px; text-decoration-skip-ink: none">Try =
+Diffgram Online</span></a></div><div></div></div></td>
+      </tr>
+    </tbody>
+  </table><table class=3D"module" role=3D"module" data-type=3D"text" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"table-la=
+yout: fixed;" data-muid=3D"28e727cc-bf19-4663-8546-713b12c85b1c" data-mc-mo=
+dule-version=3D"2019-10-22">
+    <tbody>
+      <tr>
+        <td style=3D"padding:18px 0px 18px 0px; line-height:22px; text-alig=
+n:inherit;" height=3D"100%" valign=3D"top" bgcolor=3D"" role=3D"module-cont=
+ent"><div><div style=3D"font-family: inherit; text-align: inherit">About Di=
+ffgram: Training Data (Data Labeling, Annotation, Workflow) for all Data Ty=
+pes (Image, Video, 3D, Text, Geo, Audio, more) at scale.&nbsp;</div>
+<div style=3D"font-family: inherit; text-align: inherit"><br></div>
+<div style=3D"font-family: inherit; text-align: inherit"><span style=3D"box=
+-sizing: border-box; padding-top: 0px; padding-right: 0px; padding-bottom: =
+0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: =
+0px; margin-left: 0px; font-style: inherit; font-variant-ligatures: inherit=
+; font-variant-caps: inherit; font-variant-numeric: inherit; font-variant-e=
+ast-asian: inherit; font-weight: inherit; font-stretch: inherit; line-heigh=
+t: inherit; font-family: inherit; font-size: 14px; vertical-align: baseline=
+; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px;=
+ border-left-width: 0px; border-top-style: initial; border-right-style: ini=
+tial; border-bottom-style: initial; border-left-style: initial; border-top-=
+color: initial; border-right-color: initial; border-bottom-color: initial; =
+border-left-color: initial; border-image-source: initial; border-image-slic=
+e: initial; border-image-width: initial; border-image-outset: initial; bord=
+er-image-repeat: initial; color: #000000; letter-spacing: normal; orphans: =
+2; text-align: start; text-indent: 0px; text-transform: none; white-space: =
+pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; bac=
+kground-color: rgb(255, 255, 255); text-decoration-thickness: initial; text=
+-decoration-style: initial; text-decoration-color: initial">Diffgram is the=
+ Open Source alternative to</span><span style=3D"box-sizing: border-box; pa=
+dding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;=
+ margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; =
+font-style: inherit; font-variant-ligatures: inherit; font-variant-caps: in=
+herit; font-variant-numeric: inherit; font-variant-east-asian: inherit; fon=
+t-weight: inherit; font-stretch: inherit; line-height: inherit; font-family=
+: inherit; font-size: 14px; vertical-align: baseline; border-top-width: 0px=
+; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px=
+; border-top-style: initial; border-right-style: initial; border-bottom-sty=
+le: initial; border-left-style: initial; border-top-color: initial; border-=
+right-color: initial; border-bottom-color: initial; border-left-color: init=
+ial; border-image-source: initial; border-image-slice: initial; border-imag=
+e-width: initial; border-image-outset: initial; border-image-repeat: initia=
+l; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px;=
+ text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px;=
+ -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text=
+-decoration-thickness: initial; text-decoration-style: initial; text-decora=
+tion-color: initial"> </span><a href=3D"https://u22220194.ct.sendgrid.net/l=
+s/click?upn=3D3IlewKRktVTqhFutlRN2vCaPA-2FRr-2B-2BxQ-2B-2B8HMIYpqA-2FViaqKm=
+AwisdRNQUh4fOcedXkgsQT8YC2-2FLfwHDMTwkkqSplHPGwauG3-2BkpxPEHtuCsvCZIzNgvOR3=
+fUwTWiyFM7EU_INgc0CXRkIvGU-2BJ1W6HLAwQ7OhM-2F8PJqxC1iQmIcswswF-2BFaQrOV9ylC=
+r0lxWVnu7NqUeasiq8NYwDtt3BBQeZN3pIoJD5-2F3XZzHjrDcckEimQpVraFw9GlWMH4jK7oKD=
+Tk5BkYsj28yicRIfPj7N8dUuth4LkBXqNkBOhp6c9RlNbAIs4NPTgh9x7hZ74KpWmDqRdjgWi1O=
+Py0wAe0SMpSSILiVeM9TgsmIj6gLRUFY6C0jRlfsv4Ft6YHMXP6OTOdv1-2BszLP62W7oh7ikD3=
+erSoZfQHtInlmbkTfsBSwPsjIKvCdt1bQHy0QP1B1XbxsDVL7HdOwZB9VtrxbbCV8gi8Oic-2FB=
+Fb-2BWdXjllAejQO7APwmM-2BqJsxfMQh6a1c1MT-2FN8mqBlwlHG0DF4SQpaMNZ4wh-2FQoeGl=
+q-2FvG-2BphGW8SPMBIJzUr4xFxwQp94Ts5Ny9AGE-2FKlGZpP7aq3SHx9lC4cMoRPLByiwgmWZ=
+AAYLTItdhxeLoxUgRBn1yzXYIPkayMzzDzw43Cpz3-2BP-2FqqMi2Ks0lAKck-2BGeoCsTgfFoF=
+7RQ4qd12n-2BEo1-2Fc6VgiwR1OQKQ2syzB-2BEVoBcXJOdgF28d-2BXKC3FHgNbaj-2Bc-2Bfp=
+e3-2FYbiMocnSE0e6E0BNQIq-2FzfQWQc678zYuGZkWTwU0WihbYaFljMwjLpOHiZ2yHnGZFol5=
+PDAIHFglIBtB6pegP7bAVLwmJwde-2BLk7je1XUARWD-2F5L-2FefQrGnq9M8CTLOpwAY5z5jB0=
+K-2FxhGRENMuybpT-2FhaOvhf47Of022hnpdGc07R-2FrPX9iem84mwmWzOaHw16-2BOC3eKlgL=
+AfqtsAN4PAs3ZKlDsgnoZPxtQVdgrxdUEnaZURAOp1cH5hTLmWtGKmbxPTsRFKScvehZiSQgYZq=
+JPcPJ-2BWPbemhworpzC3xl69JE5wvs7zw0kCydA-2BbZ5y8utiIp1uBEsiF06PDuddixDvfFjE=
+wwvDBbhNMEu2yXuGvwXI7cA5YKssVHuZxwQSstIaJHa2ALXxXuiNT"><span style=3D"box-s=
+izing: border-box; padding-top: 0px; padding-right: 0px; padding-bottom: 0p=
+x; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0p=
+x; margin-left: 0px; font-style: inherit; font-variant-ligatures: inherit; =
+font-variant-caps: inherit; font-variant-numeric: inherit; font-variant-eas=
+t-asian: inherit; font-weight: inherit; font-stretch: inherit; line-height:=
+ inherit; font-family: inherit; font-size: 14px; vertical-align: baseline; =
+border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; b=
+order-left-width: 0px; border-top-style: initial; border-right-style: initi=
+al; border-bottom-style: initial; border-left-style: initial; border-top-co=
+lor: initial; border-right-color: initial; border-bottom-color: initial; bo=
+rder-left-color: initial; border-image-source: initial; border-image-slice:=
+ initial; border-image-width: initial; border-image-outset: initial; border=
+-image-repeat: initial; outline-color: initial; outline-style: none; outlin=
+e-width: initial; text-decoration-line: none; text-decoration-thickness: in=
+itial; text-decoration-style: initial; text-decoration-color: initial; tran=
+sition-duration: 0.3s; transition-timing-function: ease; transition-delay: =
+0s; transition-property: color; letter-spacing: normal; orphans: 2; text-al=
+ign: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; =
+widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-co=
+lor: rgb(255, 255, 255)">Labelbox</span></a><span style=3D"box-sizing: bord=
+er-box; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-=
+left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-l=
+eft: 0px; font-style: inherit; font-variant-ligatures: inherit; font-varian=
+t-caps: inherit; font-variant-numeric: inherit; font-variant-east-asian: in=
+herit; font-weight: inherit; font-stretch: inherit; line-height: inherit; f=
+ont-family: inherit; font-size: 14px; vertical-align: baseline; border-top-=
+width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-=
+width: 0px; border-top-style: initial; border-right-style: initial; border-=
+bottom-style: initial; border-left-style: initial; border-top-color: initia=
+l; border-right-color: initial; border-bottom-color: initial; border-left-c=
+olor: initial; border-image-source: initial; border-image-slice: initial; b=
+order-image-width: initial; border-image-outset: initial; border-image-repe=
+at: initial; letter-spacing: normal; orphans: 2; text-align: start; text-in=
+dent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spa=
+cing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, =
+255); text-decoration-thickness: initial; text-decoration-style: initial; t=
+ext-decoration-color: initial">, </span><a href=3D"https://u22220194.ct.sen=
+dgrid.net/ls/click?upn=3D3IlewKRktVTqhFutlRN2vLl8oxCZaqSgYScXDhCQEkx61CTxka=
+YwoT8enR4mUcYcCpTm8F8iHt8tivHu-2B7M-2BsQ-3D-3DcgrB_INgc0CXRkIvGU-2BJ1W6HLAw=
+Q7OhM-2F8PJqxC1iQmIcswswF-2BFaQrOV9ylCr0lxWVnu7NqUeasiq8NYwDtt3BBQeZN3pIoJD=
+5-2F3XZzHjrDcckEimQpVraFw9GlWMH4jK7oKDTk5BkYsj28yicRIfPj7N8dUuth4LkBXqNkBOh=
+p6c9RlNbAIs4NPTgh9x7hZ74KpWmDqRdjgWi1OPy0wAe0SMpSSILiVeM9TgsmIj6gLRUFY6C0jR=
+lfsv4Ft6YHMXP6OTOdv1-2BszLP62W7oh7ikD3erSoZfQHtInlmbkTfsBSwPsjIKvCdt1bQHy0Q=
+P1B1XbxsDVL7HdOwZB9VtrxbbCV8gi8Oic-2FBFb-2BWdXjllAejQO7APwmM-2BqJsxfMQh6a1c=
+1MT-2FN8mqBlwlHG0DF4SQpaMNZ4wh-2FQoeGlq-2FvG-2BphGW8SPMBIJzUr4xFxwQp94Ts5Ny=
+9AGE-2FKlGZpP7aq3SHx9lC4cMoRPLByiwgmWZAAYLTItdhxeLoxUgRBn1yzXYIPkayMzzDzw43=
+Cpz3-2BP-2FqqMi2Ks0lAKck-2BGeoCsTgfFoF7RQ4qd12n-2BEo1-2Fc6VgiwR1OQKQ2syzB-2=
+BEVoBcXJOdgF28d-2BXKC3FHgNbaj-2Bc-2Bfpe3-2FYbiMocnSE0e6E0BNQIq-2FzfQWQc678z=
+YuGZkWTwU0WihbYaFljMwjLpOHiZ2yHnGZFol5PDAIHFglIBtB6pegP7bAVLwmJwde-2BLk7je1=
+XUARWD-2F5L-2FefQrGnq9M8CTLOpwAY5z5jB0K-2FxhGRENMuybpT-2FhaOvhf47Of022hnpdG=
+c07R-2FrPX9iem84mwmWzOaHw16-2BOC3eKlgLAfqtsAN4PAs3ZKlDsgnoZPxtQVdggF1HHS2PH=
+UMGyBfJsiwldproyrcN4YGgEb32AuzxwE-2BPOGrNsXBgCCjOIKZl0sD00a17i-2BYDOxJKkWmK=
+jthFWX1rRFnh32PEJDDv8heo3dGl9T0a8cp-2F9pQKno3oaLToOTWOT-2FdjquwwsmtM9Wru9YZ=
+uF3coIVpzMiYj4bBg1h0"><span style=3D"box-sizing: border-box; padding-top: 0=
+px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top:=
+ 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-style: =
+inherit; font-variant-ligatures: inherit; font-variant-caps: inherit; font-=
+variant-numeric: inherit; font-variant-east-asian: inherit; font-weight: in=
+herit; font-stretch: inherit; line-height: inherit; font-family: inherit; f=
+ont-size: 14px; vertical-align: baseline; border-top-width: 0px; border-rig=
+ht-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top=
+-style: initial; border-right-style: initial; border-bottom-style: initial;=
+ border-left-style: initial; border-top-color: initial; border-right-color:=
+ initial; border-bottom-color: initial; border-left-color: initial; border-=
+image-source: initial; border-image-slice: initial; border-image-width: ini=
+tial; border-image-outset: initial; border-image-repeat: initial; outline-c=
+olor: initial; outline-style: none; outline-width: initial; text-decoration=
+-line: none; text-decoration-thickness: initial; text-decoration-style: ini=
+tial; text-decoration-color: initial; transition-duration: 0.3s; transition=
+-timing-function: ease; transition-delay: 0s; transition-property: color; l=
+etter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; tex=
+t-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -we=
+bkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255)">LabelStu=
+dio / Heartex</span></a><span style=3D"box-sizing: border-box; padding-top:=
+ 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-to=
+p: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-style=
+: inherit; font-variant-ligatures: inherit; font-variant-caps: inherit; fon=
+t-variant-numeric: inherit; font-variant-east-asian: inherit; font-weight: =
+inherit; font-stretch: inherit; line-height: inherit; font-family: inherit;=
+ font-size: 14px; vertical-align: baseline; border-top-width: 0px; border-r=
+ight-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-t=
+op-style: initial; border-right-style: initial; border-bottom-style: initia=
+l; border-left-style: initial; border-top-color: initial; border-right-colo=
+r: initial; border-bottom-color: initial; border-left-color: initial; borde=
+r-image-source: initial; border-image-slice: initial; border-image-width: i=
+nitial; border-image-outset: initial; border-image-repeat: initial; letter-=
+spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-tran=
+sform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-t=
+ext-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoratio=
+n-thickness: initial; text-decoration-style: initial; text-decoration-color=
+: initial">, </span><a href=3D"https://u22220194.ct.sendgrid.net/ls/click?u=
+pn=3D3IlewKRktVTqhFutlRN2vLl8oxCZaqSgYScXDhCQEkyPkoIhWr-2F0hecaCVKc6b37EleN=
+KiXaQhwdRjRfLgbuEw-3D-3DwkCF_INgc0CXRkIvGU-2BJ1W6HLAwQ7OhM-2F8PJqxC1iQmIcsw=
+swF-2BFaQrOV9ylCr0lxWVnu7NqUeasiq8NYwDtt3BBQeZN3pIoJD5-2F3XZzHjrDcckEimQpVr=
+aFw9GlWMH4jK7oKDTk5BkYsj28yicRIfPj7N8dUuth4LkBXqNkBOhp6c9RlNbAIs4NPTgh9x7hZ=
+74KpWmDqRdjgWi1OPy0wAe0SMpSSILiVeM9TgsmIj6gLRUFY6C0jRlfsv4Ft6YHMXP6OTOdv1-2=
+BszLP62W7oh7ikD3erSoZfQHtInlmbkTfsBSwPsjIKvCdt1bQHy0QP1B1XbxsDVL7HdOwZB9Vtr=
+xbbCV8gi8Oic-2FBFb-2BWdXjllAejQO7APwmM-2BqJsxfMQh6a1c1MT-2FN8mqBlwlHG0DF4SQ=
+paMNZ4wh-2FQoeGlq-2FvG-2BphGW8SPMBIJzUr4xFxwQp94Ts5Ny9AGE-2FKlGZpP7aq3SHx9l=
+C4cMoRPLByiwgmWZAAYLTItdhxeLoxUgRBn1yzXYIPkayMzzDzw43Cpz3-2BP-2FqqMi2Ks0lAK=
+ck-2BGeoCsTgfFoF7RQ4qd12n-2BEo1-2Fc6VgiwR1OQKQ2syzB-2BEVoBcXJOdgF28d-2BXKC3=
+FHgNbaj-2Bc-2Bfpe3-2FYbiMocnSE0e6E0BNQIq-2FzfQWQc678zYuGZkWTwU0WihbYaFljMwj=
+LpOHiZ2yHnGZFol5PDAIHFglIBtB6pegP7bAVLwmJwde-2BLk7je1XUARWD-2F5L-2FefQrGnq9=
+M8CTLOpwAY5z5jB0K-2FxhGRENMuybpT-2FhaOvhf47Of022hnpdGc07R-2FrPX9iem84mwmWzO=
+aHw16-2BOC3eKlgLAfqtsAN4PAs3ZKlDsgnoZPxtQVdgkmGroS-2BcigwE1iVCaI2pVGNZhgLjF=
+ds-2F9dnh-2BIS8ohfFWE3HCEzKSJvXvkAKcmw6EizLku6UHcmpJivXmKSjY2NnIeLo4e-2FTki=
+7KLAkOjiyygGK6Mwd37OOvi2x5bGdD-2Fxkat6Dzx122VElhLelj2zMlml3LcuJaXz9aYc3LkJ2=
+"><span style=3D"box-sizing: border-box; padding-top: 0px; padding-right: 0=
+px; padding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: =
+0px; margin-bottom: 0px; margin-left: 0px; font-style: inherit; font-varian=
+t-ligatures: inherit; font-variant-caps: inherit; font-variant-numeric: inh=
+erit; font-variant-east-asian: inherit; font-weight: inherit; font-stretch:=
+ inherit; line-height: inherit; font-family: inherit; font-size: 14px; vert=
+ical-align: baseline; border-top-width: 0px; border-right-width: 0px; borde=
+r-bottom-width: 0px; border-left-width: 0px; border-top-style: initial; bor=
+der-right-style: initial; border-bottom-style: initial; border-left-style: =
+initial; border-top-color: initial; border-right-color: initial; border-bot=
+tom-color: initial; border-left-color: initial; border-image-source: initia=
+l; border-image-slice: initial; border-image-width: initial; border-image-o=
+utset: initial; border-image-repeat: initial; outline-color: initial; outli=
+ne-style: none; outline-width: initial; text-decoration-line: none; text-de=
+coration-thickness: initial; text-decoration-style: initial; text-decoratio=
+n-color: initial; transition-duration: 0.3s; transition-timing-function: ea=
+se; transition-delay: 0s; transition-property: color; letter-spacing: norma=
+l; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; w=
+hite-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-wid=
+th: 0px; background-color: rgb(255, 255, 255)">Super Annotate</span></a><sp=
+an style=3D"box-sizing: border-box; padding-top: 0px; padding-right: 0px; p=
+adding-bottom: 0px; padding-left: 0px; margin-top: 0px; margin-right: 0px; =
+margin-bottom: 0px; margin-left: 0px; font-style: inherit; font-variant-lig=
+atures: inherit; font-variant-caps: inherit; font-variant-numeric: inherit;=
+ font-variant-east-asian: inherit; font-weight: inherit; font-stretch: inhe=
+rit; line-height: inherit; font-family: inherit; font-size: 14px; vertical-=
+align: baseline; border-top-width: 0px; border-right-width: 0px; border-bot=
+tom-width: 0px; border-left-width: 0px; border-top-style: initial; border-r=
+ight-style: initial; border-bottom-style: initial; border-left-style: initi=
+al; border-top-color: initial; border-right-color: initial; border-bottom-c=
+olor: initial; border-left-color: initial; border-image-source: initial; bo=
+rder-image-slice: initial; border-image-width: initial; border-image-outset=
+: initial; border-image-repeat: initial; letter-spacing: normal; orphans: 2=
+; text-align: start; text-indent: 0px; text-transform: none; white-space: p=
+re-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; back=
+ground-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-=
+decoration-style: initial; text-decoration-color: initial">, </span><a href=
+=3D"https://u22220194.ct.sendgrid.net/ls/click?upn=3D3IlewKRktVTqhFutlRN2vL=
+l8oxCZaqSgYScXDhCQEkyIsOIlSytvtMHNRjUzGk2yeFvy-2F-2FcT448fKB-2FVTcF1ng-3D-3=
+DxXCv_INgc0CXRkIvGU-2BJ1W6HLAwQ7OhM-2F8PJqxC1iQmIcswswF-2BFaQrOV9ylCr0lxWVn=
+u7NqUeasiq8NYwDtt3BBQeZN3pIoJD5-2F3XZzHjrDcckEimQpVraFw9GlWMH4jK7oKDTk5BkYs=
+j28yicRIfPj7N8dUuth4LkBXqNkBOhp6c9RlNbAIs4NPTgh9x7hZ74KpWmDqRdjgWi1OPy0wAe0=
+SMpSSILiVeM9TgsmIj6gLRUFY6C0jRlfsv4Ft6YHMXP6OTOdv1-2BszLP62W7oh7ikD3erSoZfQ=
+HtInlmbkTfsBSwPsjIKvCdt1bQHy0QP1B1XbxsDVL7HdOwZB9VtrxbbCV8gi8Oic-2FBFb-2BWd=
+XjllAejQO7APwmM-2BqJsxfMQh6a1c1MT-2FN8mqBlwlHG0DF4SQpaMNZ4wh-2FQoeGlq-2FvG-=
+2BphGW8SPMBIJzUr4xFxwQp94Ts5Ny9AGE-2FKlGZpP7aq3SHx9lC4cMoRPLByiwgmWZAAYLTIt=
+dhxeLoxUgRBn1yzXYIPkayMzzDzw43Cpz3-2BP-2FqqMi2Ks0lAKck-2BGeoCsTgfFoF7RQ4qd1=
+2n-2BEo1-2Fc6VgiwR1OQKQ2syzB-2BEVoBcXJOdgF28d-2BXKC3FHgNbaj-2Bc-2Bfpe3-2FYb=
+iMocnSE0e6E0BNQIq-2FzfQWQc678zYuGZkWTwU0WihbYaFljMwjLpOHiZ2yHnGZFol5PDAIHFg=
+lIBtB6pegP7bAVLwmJwde-2BLk7je1XUARWD-2F5L-2FefQrGnq9M8CTLOpwAY5z5jB0K-2FxhG=
+RENMuybpT-2FhaOvhf47Of022hnpdGc07R-2FrPX9iem84mwmWzOaHw16-2BOC3eKlgLAfqtsAN=
+4PAs3ZKlDsgnoZPxtQVdglw4ckIGkZ4QeJtvjzBiqr02KYPzO1-2FEVfFYP2pIThKLDPrcJGfU2=
+WkhL6wN2tYwiM1641SL4YrPE1nqOmc7-2B-2BKUVPw3BdroWm4rEyqTFWr7eWM3Z5PvVcEQNdnv=
+7N-2B99VvBnfDdyZhMiSLTfp-2FIYypNxonx7Gzh7cMLPA7riKkM"><span style=3D"box-si=
+zing: border-box; padding-top: 0px; padding-right: 0px; padding-bottom: 0px=
+; padding-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px=
+; margin-left: 0px; font-style: inherit; font-variant-ligatures: inherit; f=
+ont-variant-caps: inherit; font-variant-numeric: inherit; font-variant-east=
+-asian: inherit; font-weight: inherit; font-stretch: inherit; line-height: =
+inherit; font-family: inherit; font-size: 14px; vertical-align: baseline; b=
+order-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; bo=
+rder-left-width: 0px; border-top-style: initial; border-right-style: initia=
+l; border-bottom-style: initial; border-left-style: initial; border-top-col=
+or: initial; border-right-color: initial; border-bottom-color: initial; bor=
+der-left-color: initial; border-image-source: initial; border-image-slice: =
+initial; border-image-width: initial; border-image-outset: initial; border-=
+image-repeat: initial; outline-color: initial; outline-style: none; outline=
+-width: initial; text-decoration-line: none; text-decoration-thickness: ini=
+tial; text-decoration-style: initial; text-decoration-color: initial; trans=
+ition-duration: 0.3s; transition-timing-function: ease; transition-delay: 0=
+s; transition-property: color; letter-spacing: normal; orphans: 2; text-ali=
+gn: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; w=
+idows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-col=
+or: rgb(255, 255, 255)">V7 Labs Darwin.</span>&nbsp;</a></div>
+<div style=3D"font-family: inherit; text-align: inherit"><br></div><div></d=
+iv></div></td>
+      </tr>
+    </tbody>
+  </table><div data-role=3D"module-unsubscribe" class=3D"module" role=3D"mo=
+dule" data-type=3D"unsubscribe" style=3D"color:#444444; font-size:12px; lin=
+e-height:20px; padding:16px 16px 16px 16px; text-align:Center;" data-muid=
+=3D"4e838cf3-9892-4a6d-94d6-170e474d21e5"><div class=3D"Unsubscribe--addres=
+sLine"><p class=3D"Unsubscribe--senderName" style=3D"font-size:12px; line-h=
+eight:20px;">Diffgram Inc</p><p style=3D"font-size:12px; line-height:20px;"=
+><span class=3D"Unsubscribe--senderAddress">Santa Clara</span>, <span class=
+=3D"Unsubscribe--senderCity">Santa Clara</span>, <span class=3D"Unsubscribe=
+--senderState">CA</span> <span class=3D"Unsubscribe--senderZip"></span></p>=
+</div><p style=3D"font-size:12px; line-height:20px;"><a class=3D"Unsubscrib=
+e--unsubscribeLink" href=3D"https://u22220194.ct.sendgrid.net/asm/unsubscri=
+be/?user_id=3D22220194&amp;data=3DWGSwB3c-JmMQWEn1ubU_UblJV1PA4WR8gvG_NzMuY=
+0hoMDAwdTAwMJo6cKi_ZhiLO4VoRL0ini34tGpMaSph0zFYQOseALCTb79lk1APduZLarrIvQ7x=
+zUJJrWADAjgaCFKjjJW2HroLRdbuWt12L-Q8xt0Ph_-ITao-PsBR6fnkw3P5vUFrPFCQOYndo8Q=
+5gCFxDSxQy_rYYPdc3xhZddNri1bcrvleuGZ5E4_W2rh5RjQVWj7IiVlMHpnGzua7i-Cavu6vdM=
+nKT0ETA1_PyaOPEnDGAzttMEHx2kRmdDEwqVvLzokP6pKj4Mob5SUKDhLOp9ekg6MO_uBN3Rhjn=
+zvlt7Fss22m4p_IBZ_JhgeVDlzFn8grblsOyZ2T8k2cF_YrOIQayC_qNI_6_ccaSKlBlTEUcXtU=
+hL84rHCzseALvhCLz7vsggOzWE160Qyklq-Ln-VmOvnCSd5sJAAJl0MOuhq9REFck9oTdeG77iZ=
+Sq_ZM1dZLQzlS4VVQx-46FmRal4muRR6BJUez6uAE9MckQZf9D5mZ_SJ9CQgBxvDAwzLyyb6S1R=
+D2kiPCvT4UnB0O2-8PUQTCUKscnXlxblha28P8z1vDDJB-kCNmc9NmCWL16fn4D-72WEwAcC-uQ=
+mTeTMgYEyVH_QpnOv3sU9yvwJ8oNpjvPlRnNDtqDgy6NlY1u3nkEoABllSJltsMGyYDNQ_99wpt=
+sTKDY3I_903a7mj3kN8Oq-_Q7GmMSGJNdrugqCwkOiiR9GtjSzzCM25adIFhg2UHMnAK2oq5ZEy=
+ji3J30BKy7hP0M40ddFKbJoMi4BABm95DfKuCJC5imTWJJjhVRhtcTwVXkPyMcoTFvc811j5vrR=
+7o0DCC3uwt16PwxMMg7ia7bM2Ge6GjemITRiQ8prCk9c6u5TUZ--zdiL9CpKEBCGQnAYl1cDg0g=
+de_lonJJDBZkPw-BqXQO6Vv_8p5pnlvxz0g1Dj72DKKRLLKV2Bt8l1TWCKoI0nH-yNZz4wEyJGk=
+onZT-r1haupdAsw3oNRWUVbSEvrlOldBTeZD2pTkwfBwnqpk6h0rQvb2Q3Egqz452W6bKV19bTb=
+39wGXU_1t3whbMixGepH4gZpRNl0nFW4-ZLep6T52qL4H6eT6eiXtLkf0psPOG-uZOJmSlrMYJn=
+BJszTfpjl5pLfSXTOd5eFwJdiCoQ0yiUmvYjLyWqXYp-zHNfkm95kLSkXsm1k=3D" target=3D=
+"_blank" style=3D"">Unsubscribe</a> - <a href=3D"https://u22220194.ct.sendg=
+rid.net/asm/?user_id=3D22220194&amp;data=3DNcZRxVbbUxIz_an-5j4_xizo0CWebgqe=
+kUFPwgeJ_lxoMDAwdTAwMAV6fduszl8CnP_reG39H66DG6RkCS9uZCjst2vrJVMDz6XdePXjbGr=
+_q00NL6idrC-_SDEaIrbYmBLphNYjqk3gALJTLV_LHYagNYef-X6iZkb_GcA2AsJ6gR08wC1m0J=
+BDcEEzB8Oov5ro1cloUZ1FgAmac2z0GKU6WNcMqtlbmTFQ54Dwln3Wnqmtzrn-zpGe_HepGrmzF=
+PlEox7m2bLo-nmm784hq3ag8ou5FqWI6va3S4ia_nheeNKIvKByDJik6Qra5oKVo_-yHvv_N9BL=
+WLbV5GtEHXfVpmU643mBGGaay1iBTc89gHDWvTg5Duhy7KX1CpBgwBMAlXBd3q4yAEsFuT7hdLU=
+C8OymH941iYzpyNQn6LG7zVTNYE2xSAsz4hwO4Q-uW1RnokpNKL8aTFk2-DTaKu9XBcfA2C4Fkm=
+aLda5rFxlfSkISah3eOexXgKOVITvQvth0fzJfRgN9l6JTvYAdKEQui6gkotIpwT3Pvhh0TCFG5=
+hT2SfZCZYhUOWZXyO-cRbbobg8WN6h-xeAuEAcU-scJzgttOt03C8TIwZsU_nny6Qrercn-6XAw=
+KAoTai7RXCgMv3Xk-orCpAswUh2MSlesXhgjVxP__0B-49Gv1neXOS8CmyTg89JBimnwYPAAlyc=
+gkiChtJhyw_psMcncqMaXLkdkhI68N7vIdruxxMi12UHUlAMyozMvO3AYXBBpXulzzimimteDDh=
+jbvdKzyp_Ba-CPTTSsbGxSidmegmmfjSCh89kQqf7z9rbyTPZYqtRz0bZ4hUN39b021CEftNK4J=
+zFqde5LLqI1niavu9CXyD0zt_or2lCrz6o2aLlI4rtiP23vPZtV3PebQuM5wpwFwgA87ZXBBxkx=
+Vqak7Vudo1nSKj_jF7DUax60IPeovcsoXUDnkJ24ZEMxMwkCyNK7q2Y0K6FxZDcvQazpexPO9ZN=
+Hss_CooN6HMf9X8gRU4reNuVi1cX08GlBJg04xZ7M-8TPUphvMpscRxW9pCP0TbYOkFjyHqJuXF=
+lBr4cXA-B9V2kkgfyMXBjXsR8-3agkLcQmWnKTjrW1R3Dz3fnw1MIdgrNd_NxnCWWa-0uL1Vs6_=
+gaMkTFaiJ1waRnMpGDMt7vA-1WBKQYuwl2HocnqFhaxm4Kp0A=3D=3D" target=3D"_blank" =
+class=3D"Unsubscribe--unsubscribePreferences" style=3D"">Unsubscribe Prefer=
+ences</a></p></div></td>
+                                      </tr>
+                                    </table>
+                                    <!--[if mso]>
+                                  </td>
+                                </tr>
+                              </table>
+                            </center>
+                            <![endif]-->
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </center>
+    <img src=3D"https://u22220194.ct.sendgrid.net/wf/open?upn=3DN8U5bvV7W3P=
+fvmzeOkLcIlvufPFxV0isu0cWUvyn86Bh7R380qeG9HUVtK7f8rcVEdpQRARLJ9-2BHOtAtg9yi=
+o6anSUbZoqst8XOuKRpG7uMZ9nJZI7M8lEncYtf7CJlGvUyHDgs4sEJldjRi6FbTFGPmNsmvjB-=
+2BJSCoHNeJ0Y8E94JbpagUDHvDMsV4TTrgQRtqqJoeT7kNQSGzFPWnW3abu-2FOa5genskFwBUq=
+gxnf8LyWG6eTRibXyv5xVl-2FtvWwTZhqaeSIVXw5dPVlNQche0g4PTjppYXuQ4qfTIBBfTF3Vg=
+UDwSUZb0wceprscCRQQ9LyWyzZB09Yo5wvoK8DyeWCP6VlRXekuS9ym73bBG4q95V6h6UppCLtn=
+wNg7fQ7gIK3XZGnnA2-2FkZXLDN3XPzP14iMjIpkkcv53DgwCaNNdyphN6MvVBI-2Fz8nyds1Ke=
+tca2WA2-2B9nU027-2F-2BLaPbVsHmzyzSsJM51aSAAIEnm1OmYNH8Yi3lK2cpWk7FPaFGLZzY3=
+uYC4rrJN9nCdJEj1t-2Fw15IOFgx0U5hdDChdb02trPH7Ojzru5w8n4ZchBlbyvviaKHgHCrzjP=
+Y0eUpJqjT5oR9R69xsejSPLlAxZMRI7jNoJH3exfVyiixWWLdJan-2BN0xKZmin8XG-2B8oQ3JP=
+tuGDEoRPMZWmUuhZ3M2K6P4tX4PzIQVqTxLqvri-2FbyS0kstiK1Fjj8luT4FQfpTVYVSpwTnF9=
+h5x72twF1H0yjeUwaXScvyejBcMCQVjnlS2Q081Qzh7vqLNCCA2w7eit707paYnIaKA10CmVshV=
+UQZAmGnAh2oEl53p5hJM27TJsm5S2l55Lnnsewe2IBYUzVyAlaQaNoErScwdtSJmtyrewQskZT-=
+2F-2F-2BVHYeBjKgeDTcwR1VCnV-2BMGLAnc4jK5qxMaJHyEb3CPKzh4Ay6X-2FqVHAzoPcgAR2=
+5xPEuA8MUdjpXDqX3cTQtseJytnj-2FNOFnJ2OPO60uk2jNWUqWGeJLV4ekQqseaJn-2FK1H42w=
+72G" alt=3D"" width=3D"1" height=3D"1" border=3D"0" style=3D"height:1px !im=
+portant;width:1px !important;border-width:0 !important;margin-top:0 !import=
+ant;margin-bottom:0 !important;margin-right:0 !important;margin-left:0 !imp=
+ortant;padding-top:0 !important;padding-bottom:0 !important;padding-right:0=
+ !important;padding-left:0 !important;"/></body>
+  </html>
+--c2c3980d3cb7004cd5d07d3b17941cd1ecb15f97da265de5d6246e9cc609--
